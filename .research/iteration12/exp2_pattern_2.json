@@ -1,0 +1,36 @@
+{
+  "pattern": [
+    1,
+    8,
+    1,
+    8
+  ],
+  "avg_memory": 4.5,
+  "memory_variance": 16.33333396911621,
+  "ems_actions": [
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache",
+    "compress_aggressive",
+    "expand_cache"
+  ],
+  "latency_overhead": 0.056,
+  "oom_count": 0,
+  "cache_efficiency": 0.87,
+  "memory_auc": 72
+}
