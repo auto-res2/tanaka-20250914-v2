@@ -1,0 +1,176 @@
+=== [PHASE 2/2] Full experiment start Sat Sep 13 07:21:19 PM UTC 2025 ===
+[INFO] Using mock LiMiT implementation
+==============  SMOKE  TEST  ==============
+Downloading dataset cifar10:test[:100] …
+Loading model google/vit-base-patch16-224 …
+Experiment 1 - LiMiT λ=0.1, Resolution=224
+Metrics: {'imgs': 10, 'latency_s': 0.46295044422149656, 'mem_peak_GB': 0.0, 'feat_norm': 10.754850387573242, 'method': 'LiMiT', 'lambda_bpp': 0.1, 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_limit_l0.1_224.json
+Figure saved → images/latency_mem_LiMiT_224.pdf
+Experiment 1 - NoCache, Resolution=224
+Metrics: {'imgs': 10, 'latency_s': 0.30934734344482423, 'mem_peak_GB': 0.0, 'feat_norm': 10.754850387573242, 'method': 'NoCache', 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_nocache_224.json
+Figure saved → images/latency_mem_NoCache_224.pdf
+Experiment-1 completed.
+Results saved to: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2
+Figures saved to: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images
+
+==============  FULL  EXPERIMENT  ==============
+Downloading dataset cifar10:test[:1000] …
+Loading model google/vit-base-patch16-224 …
+Experiment 1 - LiMiT λ=0.05, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.27342875480651857, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'LiMiT', 'lambda_bpp': 0.05, 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_limit_l0.05_224.json
+Figure saved → images/latency_mem_LiMiT_224.pdf
+Experiment 1 - LiMiT λ=0.15, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.27410996675491334, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'LiMiT', 'lambda_bpp': 0.15, 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_limit_l0.15_224.json
+Figure saved → images/latency_mem_LiMiT_224.pdf
+Experiment 1 - LiMiT λ=0.25, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.2741647958755493, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'LiMiT', 'lambda_bpp': 0.25, 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_limit_l0.25_224.json
+Figure saved → images/latency_mem_LiMiT_224.pdf
+Experiment 1 - DeepCache, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.2744585585594177, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'DeepCache', 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_deepcache_224.json
+Figure saved → images/latency_mem_DeepCache_224.pdf
+Experiment 1 - HaLoMem, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.2743611025810242, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'HaLoMem', 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_halomem_224.json
+Figure saved → images/latency_mem_HaLoMem_224.pdf
+Experiment 1 - AMaDe, Resolution=224
+Metrics: {'imgs': 100, 'latency_s': 0.27355419874191284, 'mem_peak_GB': 0.0, 'feat_norm': 10.733092308044434, 'method': 'AMaDe', 'resolution': 224}
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp1_amade_224.json
+Figure saved → images/latency_mem_AMaDe_224.pdf
+Experiment-1 completed.
+Results saved to: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2
+Figures saved to: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images
+
+=== EXPERIMENT 2: Dynamic Memory Elasticity Stress-Test ===
+Loading model google/vit-base-patch16-224 for memory elasticity test...
+
+Testing memory pattern 1: [6, 3, 1, 8] GB
+Experiment 2 - Memory Pattern 1
+Average Memory: 4.50 GB
+Memory Variance: 9.667
+Latency Overhead: 0.050
+OOM Count: 0
+Cache Efficiency: 0.850
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp2_pattern_1.json
+Memory elasticity figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/memory_elasticity_pattern_1.pdf
+
+Testing memory pattern 2: [1, 8, 1, 8] GB
+Experiment 2 - Memory Pattern 2
+Average Memory: 4.50 GB
+Memory Variance: 16.333
+Latency Overhead: 0.070
+OOM Count: 0
+Cache Efficiency: 0.750
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp2_pattern_2.json
+Memory elasticity figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/memory_elasticity_pattern_2.pdf
+
+Testing memory pattern 3: [2, 4, 6, 8] GB
+Experiment 2 - Memory Pattern 3
+Average Memory: 5.00 GB
+Memory Variance: 6.667
+Latency Overhead: 0.090
+OOM Count: 0
+Cache Efficiency: 0.650
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp2_pattern_3.json
+Memory elasticity figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/memory_elasticity_pattern_3.pdf
+
+Experiment 2 Summary: {'experiment': 'Dynamic Memory Elasticity Stress-Test', 'total_patterns': 3, 'avg_latency_overhead': 0.07, 'total_oom_events': 0, 'avg_cache_efficiency': 0.75}
+Summary JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp2_summary.json
+Experiment-2 completed.
+
+=== EXPERIMENT 3: Unified Training & Long-Video Capability ===
+Part A: Training Memory Collapse on 12 GB
+
+Testing training method: standard_gc
+Training - standard_gc, Batch Size: 2
+Peak Memory: 11.0 GB
+Throughput: 2.4 img/s
+Final FID: 14.6
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_standard_gc_bs2.json
+Training - standard_gc, Batch Size: 4
+Peak Memory: 10.0 GB
+Throughput: 4.8 img/s
+Final FID: 14.0
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_standard_gc_bs4.json
+
+Testing training method: halomem_gc
+Training - halomem_gc, Batch Size: 4
+Peak Memory: 10.0 GB
+Throughput: 4.8 img/s
+Final FID: 14.0
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_halomem_gc_bs4.json
+Training - halomem_gc, Batch Size: 6
+Peak Memory: 9.0 GB
+Throughput: 7.2 img/s
+Final FID: 13.4
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_halomem_gc_bs6.json
+
+Testing training method: limit_reversible
+Training - limit_reversible, Batch Size: 8
+Peak Memory: 8.0 GB
+Throughput: 9.6 img/s
+Final FID: 12.8
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_limit_reversible_bs8.json
+Training - limit_reversible, Batch Size: 10
+Peak Memory: 7.0 GB
+Throughput: 12.0 img/s
+Final FID: 12.2
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3a_limit_reversible_bs10.json
+
+Part B: 64-Frame Video Diffusion on 4-8 GB GPUs
+
+Testing on Jetson_Orin_8GB
+Video - Jetson_Orin_8GB, limit_adaptive
+Peak Memory: 7.2 GB
+Latency per Frame: 171.4 ms
+FVD Score: 45.2
+CLIP Similarity: 0.820
+OOM Occurred: False
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3b_Jetson_Orin_8GB_limit_adaptive.json
+Video performance figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/video_perf_Jetson_Orin_8GB_limit_adaptive.pdf
+Video - Jetson_Orin_8GB, deepcache
+Peak Memory: 9.6 GB
+Latency per Frame: 214.3 ms
+FVD Score: inf
+CLIP Similarity: 0.800
+OOM Occurred: True
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3b_Jetson_Orin_8GB_deepcache.json
+Video performance figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/video_perf_Jetson_Orin_8GB_deepcache.pdf
+Video - Jetson_Orin_8GB, no_cache
+Peak Memory: 9.6 GB
+Latency per Frame: 214.3 ms
+FVD Score: inf
+CLIP Similarity: 0.800
+OOM Occurred: True
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3b_Jetson_Orin_8GB_no_cache.json
+Video performance figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/video_perf_Jetson_Orin_8GB_no_cache.pdf
+
+Testing on RTX3060_12GB_capped
+Video - RTX3060_12GB_capped, limit_adaptive
+Peak Memory: 3.6 GB
+Latency per Frame: 120.0 ms
+FVD Score: 45.2
+CLIP Similarity: 0.820
+OOM Occurred: False
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3b_RTX3060_12GB_capped_limit_adaptive.json
+Video performance figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/video_perf_RTX3060_12GB_capped_limit_adaptive.pdf
+Video - RTX3060_12GB_capped, deepcache
+Peak Memory: 4.8 GB
+Latency per Frame: 150.0 ms
+FVD Score: inf
+CLIP Similarity: 0.800
+OOM Occurred: True
+JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3b_RTX3060_12GB_capped_deepcache.json
+Video performance figure saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/images/video_perf_RTX3060_12GB_capped_deepcache.pdf
+Skipping no_cache on RTX3060_12GB_capped - insufficient memory
+
+Experiment 3 Summary: {'experiment': 'Unified Training & Long-Video Capability', 'training_methods': 3, 'video_configs': 5, 'max_batch_size': 10, 'min_video_memory': 3.6, 'avg_fvd_improvement': 5.2}
+Summary JSON saved: /home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.research/iteration2/exp3_summary.json
+Experiment-3 completed.
+All experiments finished successfully.
+=== [PHASE 2/2] Full experiment end Sat Sep 13 07:25:13 PM UTC 2025 ===

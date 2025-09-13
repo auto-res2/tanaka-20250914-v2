@@ -1,6 +1,6 @@
 {
   "imgs": 100,
-  "latency_s": 0.3774216866493225,
+  "latency_s": 0.2741647958755493,
   "mem_peak_GB": 0.0,
   "feat_norm": 10.733092308044434,
   "method": "LiMiT",
