@@ -1,0 +1,8 @@
+{
+  "method": "limit_reversible",
+  "batch_size": 10,
+  "imgs_per_sec": 46.0,
+  "peak_memory_gb": 10.8,
+  "backward_flops_e15": 0.15,
+  "val_fid": 5.16
+}

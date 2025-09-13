@@ -1,0 +1,8 @@
+{
+  "imgs": 5,
+  "latency_s": 0.06999998092651367,
+  "mem_peak_GB": 0.0,
+  "feat_norm": 10.499465942382812,
+  "method": "NoCache",
+  "resolution": 224
+}
