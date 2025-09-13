@@ -1,1 +1,24 @@
-# Please list the required python packages.
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "limit-experiments"
+version = "0.1.0"
+description = "Refactored LiMiT experimental suite"
+authors = ["Researcher <noreply@example.com>"]
+readme = "README.md"
+requires-python = ">=3.8"
+
+# -----------------------------------------------------------------------------
+# Core runtime dependencies – kept in array form as required
+# -----------------------------------------------------------------------------
+dependencies = [
+    "torch>=1.9.0",
+    "torchvision>=0.10.0",
+    "transformers>=4.31.0",
+    "datasets>=2.14.0",
+    "huggingface_hub>=0.17.0",
+    "PyYAML>=6.0",
+    "matplotlib>=3.5.0",
+]
