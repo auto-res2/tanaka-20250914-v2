@@ -1,19 +1,21 @@
+# Small-scale configuration suitable for <30 sec validation on CPU
+
 general:
   device: "cpu"
-  seed: 42
+  seed: 0
   num_workers: 0
+
+dataset:
+  hf_repo: "hf-internal-testing/cats_vs_dogs"
+  split: "train[:5]"
+  resolution: [64]
+  max_images: 4
 
 model:
   name: "google/vit-base-patch16-224"
   revision: "main"
 
-dataset:
-  hf_repo: "cifar10"
-  split: "test[:100]"
-  resolution: [224]
-  max_images: 10
-
 experiment_1:
-  lambdas: [0.10]
+  lambdas: [0.1]
   baselines: ["no_cache"]
   batch_size: 2

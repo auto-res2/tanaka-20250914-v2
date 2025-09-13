@@ -34,9 +34,7 @@ RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 # CLI ARGUMENTS
 # -----------------------------------------------------------------------------
 parser = argparse.ArgumentParser(description="LiMiT experiments runner")
-parser.add_argument(
-    "--smoke-test", action="store_true", help="run smoke test only"
-)
+parser.add_argument("--smoke-test", action="store_true", help="run smoke test only")
 parser.add_argument(
     "--full-experiment",
     action="store_true",

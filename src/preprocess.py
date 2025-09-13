@@ -4,8 +4,8 @@ Dataset downloading & DataLoader construction utilities.
 from __future__ import annotations
 
 import functools
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
 import torch
 import torchvision
@@ -29,7 +29,8 @@ class ImageFolderWrapper(torch.utils.data.Dataset):
         self.tf = torchvision.transforms.Compose(
             [
                 torchvision.transforms.Resize(
-                    resolution, interpolation=torchvision.transforms.InterpolationMode.BICUBIC
+                    resolution,
+                    interpolation=torchvision.transforms.InterpolationMode.BICUBIC,
                 ),
                 torchvision.transforms.CenterCrop(resolution),
                 torchvision.transforms.ToTensor(),
@@ -41,20 +42,7 @@ class ImageFolderWrapper(torch.utils.data.Dataset):
         return len(self.ds)
 
     def __getitem__(self, idx):
-        item = self.ds[idx]
-        if "image" in item:
-            img = item["image"]
-        elif "img" in item:
-            img = item["img"]
-        elif "pixel_values" in item:
-            img = item["pixel_values"]
-        else:
-            available_keys = list(item.keys())
-            img_key = available_keys[0] if available_keys else None
-            if img_key:
-                img = item[img_key]
-            else:
-                raise KeyError(f"No image data found in dataset item. Available keys: {available_keys}")
+        img = self.ds[idx]["image"]
         return self.tf(img)
 
 
@@ -66,7 +54,7 @@ def build_dataloaders(cfg: dict) -> Dict[int, DataLoader]:
     """Download the dataset and build one DataLoader per requested resolution."""
 
     ds_name = cfg["dataset"]["hf_repo"]
-    split = cfg["dataset"]["split"]
+    split = cfg["dataset"].get("split", "train")
 
     print(f"Downloading dataset {ds_name}:{split} …")
     try:
@@ -85,7 +73,7 @@ def build_dataloaders(cfg: dict) -> Dict[int, DataLoader]:
             dataset,
             batch_size=cfg["experiment_1"]["batch_size"],
             shuffle=False,
-            num_workers=cfg["general"]["num_workers"],
+            num_workers=cfg["general"].get("num_workers", 0),
         )
         loaders[res] = loader
     return loaders

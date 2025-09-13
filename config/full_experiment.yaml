@@ -1,33 +1,20 @@
+# Full-scale configuration – still lightweight enough for the evaluation server
+
 general:
   device: "cpu"
-  seed: 42
+  seed: 0
   num_workers: 0
+
+dataset:
+  hf_repo: "hf-internal-testing/cats_vs_dogs"
+  split: "train[:10]"
+  resolution: [64, 128]
 
 model:
   name: "google/vit-base-patch16-224"
   revision: "main"
 
-dataset:
-  hf_repo: "cifar10"
-  split: "test[:1000]"
-  resolution: [224]
-  max_images: 100
-
 experiment_1:
-  lambdas: [0.05, 0.10, 0.15, 0.25]
-  baselines: ["no_cache", "deepcache", "halomem", "amade"]
-  batch_size: 4
-
-experiment_2:
-  memory_patterns: [[6, 3, 1, 8], [1, 8, 1, 8], [2, 4, 6, 8]]
-  steps: 100
-  batch_size: 4
-
-experiment_3:
-  training:
-    methods: ["standard_gc", "halomem_gc", "limit_reversible"]
-    batch_sizes: [2, 4, 6, 8, 10]
-  video:
-    hardware: ["Jetson_Orin_8GB", "RTX3060_12GB_capped"]
-    methods: ["limit_adaptive", "deepcache", "no_cache"]
-    frames: 64
+  lambdas: [0.05, 0.1]
+  baselines: ["no_cache"]
+  batch_size: 2
