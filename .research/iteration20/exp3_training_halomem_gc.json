@@ -1,0 +1,8 @@
+{
+  "method": "halomem_gc",
+  "batch_size": 4,
+  "imgs_per_sec": 24.0,
+  "peak_memory_gb": 11.2,
+  "backward_flops_e15": 1.74,
+  "val_fid": 5.17
+}
