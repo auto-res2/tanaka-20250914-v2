@@ -3,5 +3,25 @@
   "queries": [
     "diffusion transformer memory",
     "memory efficient diffusion transformer"
+  ],
+  "research_study_list": [
+    {
+      "title": "Finding NeMo: Localizing Neurons Responsible For Memorization in Diffusion Models"
+    },
+    {
+      "title": "Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching"
+    },
+    {
+      "title": "Recurrent Memory Transformer"
+    },
+    {
+      "title": "EDT: An Efficient Diffusion Transformer Framework Inspired by Human-like Sketching"
+    },
+    {
+      "title": "Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching"
+    },
+    {
+      "title": "Multistep Distillation of Diffusion Models via Moment Matching"
+    }
   ]
 }
