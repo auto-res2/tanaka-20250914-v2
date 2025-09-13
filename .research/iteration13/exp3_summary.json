@@ -1,0 +1,9 @@
+{
+  "experiment": "Unified Training & Long-Video Capability",
+  "training_methods": 3,
+  "video_configs": 3,
+  "max_batch_size": 10,
+  "min_video_memory": 6.2,
+  "avg_fvd_improvement": 5.2,
+  "flop_saving_vs_gc": 0.92
+}
