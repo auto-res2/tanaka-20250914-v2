@@ -41,7 +41,20 @@ class ImageFolderWrapper(torch.utils.data.Dataset):
         return len(self.ds)
 
     def __getitem__(self, idx):
-        img = self.ds[idx]["image"]
+        item = self.ds[idx]
+        if "image" in item:
+            img = item["image"]
+        elif "img" in item:
+            img = item["img"]
+        elif "pixel_values" in item:
+            img = item["pixel_values"]
+        else:
+            available_keys = list(item.keys())
+            img_key = available_keys[0] if available_keys else None
+            if img_key:
+                img = item[img_key]
+            else:
+                raise KeyError(f"No image data found in dataset item. Available keys: {available_keys}")
         return self.tf(img)
 
 

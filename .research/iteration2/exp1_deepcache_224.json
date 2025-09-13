@@ -1,0 +1,8 @@
+{
+  "imgs": 100,
+  "latency_s": 0.37294368267059325,
+  "mem_peak_GB": 0.0,
+  "feat_norm": 10.733092308044434,
+  "method": "DeepCache",
+  "resolution": 224
+}

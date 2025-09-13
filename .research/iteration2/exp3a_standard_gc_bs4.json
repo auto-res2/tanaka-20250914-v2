@@ -1,0 +1,9 @@
+{
+  "method": "standard_gc",
+  "batch_size": 4,
+  "peak_memory_gb": 10.0,
+  "throughput_img_per_s": 4.8,
+  "training_flops": 4000000000000.0,
+  "gradient_norm": 0.14,
+  "final_fid": 14.0
+}

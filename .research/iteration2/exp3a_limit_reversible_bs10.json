@@ -1,0 +1,9 @@
+{
+  "method": "limit_reversible",
+  "batch_size": 10,
+  "peak_memory_gb": 7.0,
+  "throughput_img_per_s": 12.0,
+  "training_flops": 10000000000000.0,
+  "gradient_norm": 0.2,
+  "final_fid": 12.2
+}

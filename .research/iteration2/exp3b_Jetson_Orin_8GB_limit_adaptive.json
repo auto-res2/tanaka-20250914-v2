@@ -1,0 +1,11 @@
+{
+  "hardware": "Jetson_Orin_8GB",
+  "method": "limit_adaptive",
+  "frames": 64,
+  "peak_memory_gb": 7.2,
+  "latency_per_frame_ms": 171.42857142857144,
+  "fvd_score": 45.2,
+  "clip_similarity": 0.82,
+  "energy_joules": 175.0,
+  "oom_occurred": false
+}
