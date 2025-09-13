@@ -1,0 +1,11 @@
+{
+  "hardware": "RTX3060_12GB_capped",
+  "method": "limit_adaptive",
+  "frames": 64,
+  "peak_memory_gb": 3.6,
+  "latency_per_frame_ms": 120.0,
+  "fvd_score": 45.2,
+  "clip_similarity": 0.82,
+  "energy_joules": 175.0,
+  "oom_occurred": false
+}

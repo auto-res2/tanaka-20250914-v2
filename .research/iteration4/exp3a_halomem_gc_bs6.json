@@ -1,0 +1,9 @@
+{
+  "method": "halomem_gc",
+  "batch_size": 6,
+  "peak_memory_gb": 9.0,
+  "throughput_img_per_s": 7.199999999999999,
+  "training_flops": 6000000000000.0,
+  "gradient_norm": 0.16,
+  "final_fid": 13.399999999999999
+}
