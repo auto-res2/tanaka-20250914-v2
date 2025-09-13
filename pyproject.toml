@@ -6,7 +6,9 @@ build-backend = "setuptools.build_meta"
 name = "limit-experiments"
 version = "0.1.0"
 description = "Refactored LiMiT experimental suite"
-authors = ["Researcher <noreply@example.com>"]
+authors = [
+    {name = "Researcher", email = "noreply@example.com"}
+]
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -21,4 +23,9 @@ dependencies = [
     "huggingface_hub>=0.17.0",
     "PyYAML>=6.0",
     "matplotlib>=3.5.0",
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+    "scikit-learn>=1.0.0",
+    "pillow>=8.0.0",
+    "tqdm>=4.60.0",
 ]
