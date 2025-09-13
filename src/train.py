@@ -32,8 +32,11 @@ def fatal(msg: str) -> None:
 def json_dump(data: Dict[str, Any], path: pathlib.Path) -> None:
     """Light wrapper that makes sure the parent directory exists before dumping."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
+    try:
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+    except OSError as ex:
+        fatal(f"Failed to write JSON file: {ex}")
 
 
 def device_sync() -> None:
