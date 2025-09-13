@@ -1,0 +1,36 @@
+{
+  "pattern": [
+    6,
+    3,
+    1,
+    8
+  ],
+  "avg_memory": 4.5,
+  "memory_variance": 9.666666984558105,
+  "ems_actions": [
+    "maintain",
+    "maintain",
+    "compress_aggressive",
+    "expand_cache",
+    "maintain",
+    "maintain",
+    "compress_aggressive",
+    "expand_cache",
+    "maintain",
+    "maintain",
+    "compress_aggressive",
+    "expand_cache",
+    "maintain",
+    "maintain",
+    "compress_aggressive",
+    "expand_cache",
+    "maintain",
+    "maintain",
+    "compress_aggressive",
+    "expand_cache"
+  ],
+  "latency_overhead": 0.041,
+  "oom_count": 0,
+  "cache_efficiency": 0.92,
+  "memory_auc": 72
+}
