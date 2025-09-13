@@ -22,7 +22,7 @@ from .train import fatal
 # -----------------------------------------------------------------------------
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = PROJECT_ROOT / "config"
-RESEARCH_DIR = PROJECT_ROOT / ".research" / "iteration10"
+RESEARCH_DIR = PROJECT_ROOT / ".research" / "iteration11"
 IMAGES_DIR = RESEARCH_DIR / "images"
 RESULTS_DIR = RESEARCH_DIR  # JSON files stored directly here per prompt
 
