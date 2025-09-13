@@ -6,9 +6,9 @@ general:
   num_workers: 0
 
 dataset:
-  hf_repo: "hf-internal-testing/cats_vs_dogs"
-  split: "train[:10]"
-  resolution: [64, 128]
+  hf_repo: "cifar10"
+  split: "test[:10]"
+  resolution: [224]
 
 model:
   name: "google/vit-base-patch16-224"

@@ -14,7 +14,7 @@ from typing import Tuple
 
 import yaml
 
-from .evaluate import run_experiment_1
+from .evaluate import run_experiment_1, run_experiment_2, run_experiment_3
 from .train import fatal
 
 # -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from .train import fatal
 # -----------------------------------------------------------------------------
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = PROJECT_ROOT / "config"
-RESEARCH_DIR = PROJECT_ROOT / ".research" / "iteration14"
+RESEARCH_DIR = PROJECT_ROOT / ".research" / "iteration15"
 IMAGES_DIR = RESEARCH_DIR / "images"
 RESULTS_DIR = RESEARCH_DIR  # JSON files stored directly here per prompt
 
@@ -82,4 +82,6 @@ if args.smoke_test:
 print("\n==============  FULL  EXPERIMENT  ==============")
 full_cfg, _ = _load_cfg("full_experiment.yaml")
 run_experiment_1(full_cfg, RESULTS_DIR, IMAGES_DIR)
+run_experiment_2(full_cfg, RESULTS_DIR, IMAGES_DIR)
+run_experiment_3(full_cfg, RESULTS_DIR, IMAGES_DIR)
 print("All experiments finished successfully.")
