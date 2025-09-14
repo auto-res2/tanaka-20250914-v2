@@ -7,6 +7,8 @@ L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (./agents4science_2025.sty
 (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
 (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
@@ -20,9 +22,6 @@ Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd))
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 For additional information on amsmath, use the `?' option.
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -255,6 +254,7 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
 (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
 No file paper.aux.
 *geometry* driver: auto-detecting
@@ -327,11 +327,8 @@ No file paper.aux.
 [Loading MPS to PDF converter (version 2006.09.02).]
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
-
-Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
-ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
-your preamble.
- on input line 40.
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
@@ -340,211 +337,91 @@ your preamble.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
-! Text line contains an invalid character.
-l.45 ...t provably bounds the degradation in Fr^^@
-                                                  e9chet scores. On DiT-XL/2...
-
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd)
 
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.49 ...enerative models underpin much of today^^Y
-                                                  s image and video synthesi...
-
-
 Package natbib Warning: Citation `ho-2020-denoising' on page 1 undefined on inp
-ut line 49.
+ut line 54.
 
 
 Package natbib Warning: Citation `song-2019-generative' on page 1 undefined on 
-input line 49.
+input line 54.
 
 
 Package natbib Warning: Citation `song-2020-score' on page 1 undefined on input
- line 49.
+ line 54.
 
 
 Package natbib Warning: Citation `dhariwal-2021-diffusion' on page 1 undefined 
-on input line 49.
+on input line 54.
 
 
 Package natbib Warning: Citation `ma-2024-learning' on page 1 undefined on inpu
-t line 51.
+t line 56.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 1 undefined on
- input line 51.
+ input line 56.
 
 
 Package natbib Warning: Citation `zhan-2024-fast' on page 1 undefined on input 
-line 51.
+line 56.
 
 
 Package natbib Warning: Citation `chen-2024-edt' on page 1 undefined on input l
-ine 51.
+ine 56.
 
 
 Package natbib Warning: Citation `salimans-2024-multistep' on page 1 undefined 
-on input line 51.
+on input line 56.
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
 dist/fonts/enc/dvips/base/8r.enc}]
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...} For video, store whichever difference^^T
-                                                  denoising-step or frame-ti...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...fference^^Tdenoising-step or frame-time^^T
-                                                  has the smaller norm, flag...
-
-! Text line contains an invalid character.
-l.64 ... \varepsilon_t$ bounds the change in Fr^^@
-                                                  e9chet scores; the schedul...
-
-
 Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 68.
-
-
-Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
- input line 68.
-
-
-Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 68.
-
-
-Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 71.
+t line 73.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
  input line 73.
 
 
-Package natbib Warning: Citation `zhan-2024-fast' on page 2 undefined on input 
-line 73.
-
-
-Package natbib Warning: Citation `chen-2024-edt' on page 2 undefined on input l
-ine 75.
-
-
 Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 75.
+on input line 73.
 
 
 Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 77.
+t line 76.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
- input line 77.
+ input line 78.
+
+
+Package natbib Warning: Citation `zhan-2024-fast' on page 2 undefined on input 
+line 78.
+
+
+Package natbib Warning: Citation `chen-2024-edt' on page 2 undefined on input l
+ine 80.
 
 
 Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 77.
-
-[2]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.90 Analytic guarantee. If each step^^Y
-                                        s $(k,b)$ pair satisfies $k(t)\cdot ...
+on input line 80.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 Every $K$ steps^^T
-                        either fixed or solved analytically so that the runn...
+Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
+t line 82.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 ...t \varepsilon_t$ stays within $\delta$^^T
-                                                  the compressor stores an a...
-
-[3]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.114 The Hadamard^^Y
-                     s $\log d$ factor adds FLOPs, but the adaptive reductio...
+Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
+ input line 82.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
+Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
+on input line 82.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...hrm{f}\times 512^2$. Six cache regimes^^T
-                                                  vanilla, L2C, FCLC, DPC, S...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...DPC, Streamlined Inference and TA-FJLT^^T
-                                                  share identical generation...
-
-[4]
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.141 ... $256^2$ video generation on 8 GB GPUs^^T
-                                                  a capability previously ou...
-
+[2] [3] [4]
 No file paper.bbl.
 
 Package natbib Warning: There were undefined citations.
@@ -611,20 +488,18 @@ Package rerunfilecheck Warning: File `paper.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
 (rerunfilecheck)                or use package `bookmark'.
 
- )
-(see the transcript file for additional information) </home/runner/.texlive2023
-/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on paper.pdf (5 pages, 141575 bytes).
+ ) </home/runner/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.60
+0pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
+b8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on paper.pdf (5 pages, 145585 bytes).
 Transcript written on paper.log.
 This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 The top-level auxiliary file: paper.aux
@@ -649,6 +524,8 @@ L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (./agents4science_2025.sty
 (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
 (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
@@ -662,9 +539,6 @@ Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd))
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 For additional information on amsmath, use the `?' option.
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -897,6 +771,7 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
 (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
 (./paper.aux)
 *geometry* driver: auto-detecting
@@ -969,11 +844,8 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 [Loading MPS to PDF converter (version 2006.09.02).]
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
-
-Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
-ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
-your preamble.
- on input line 40.
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 (./paper.out) (./paper.out)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
@@ -983,234 +855,111 @@ your preamble.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
-! Text line contains an invalid character.
-l.45 ...t provably bounds the degradation in Fr^^@
-                                                  e9chet scores. On DiT-XL/2...
-
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd)
 
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.49 ...enerative models underpin much of today^^Y
-                                                  s image and video synthesi...
-
-
 Package natbib Warning: Citation `ho-2020-denoising' on page 1 undefined on inp
-ut line 49.
+ut line 54.
 
 
 Package natbib Warning: Citation `song-2019-generative' on page 1 undefined on 
-input line 49.
+input line 54.
 
 
 Package natbib Warning: Citation `song-2020-score' on page 1 undefined on input
- line 49.
+ line 54.
 
 
 Package natbib Warning: Citation `dhariwal-2021-diffusion' on page 1 undefined 
-on input line 49.
+on input line 54.
 
 
 Package natbib Warning: Citation `ma-2024-learning' on page 1 undefined on inpu
-t line 51.
+t line 56.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 1 undefined on
- input line 51.
+ input line 56.
 
 
 Package natbib Warning: Citation `zhan-2024-fast' on page 1 undefined on input 
-line 51.
+line 56.
 
 
 Package natbib Warning: Citation `chen-2024-edt' on page 1 undefined on input l
-ine 51.
+ine 56.
 
 
 Package natbib Warning: Citation `salimans-2024-multistep' on page 1 undefined 
-on input line 51.
+on input line 56.
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
 dist/fonts/enc/dvips/base/8r.enc}]
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...} For video, store whichever difference^^T
-                                                  denoising-step or frame-ti...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...fference^^Tdenoising-step or frame-time^^T
-                                                  has the smaller norm, flag...
-
-! Text line contains an invalid character.
-l.64 ... \varepsilon_t$ bounds the change in Fr^^@
-                                                  e9chet scores; the schedul...
-
-
 Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 68.
-
-
-Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
- input line 68.
-
-
-Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 68.
-
-
-Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 71.
+t line 73.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
  input line 73.
 
 
-Package natbib Warning: Citation `zhan-2024-fast' on page 2 undefined on input 
-line 73.
-
-
-Package natbib Warning: Citation `chen-2024-edt' on page 2 undefined on input l
-ine 75.
-
-
 Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 75.
+on input line 73.
 
 
 Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
-t line 77.
+t line 76.
 
 
 Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
- input line 77.
+ input line 78.
+
+
+Package natbib Warning: Citation `zhan-2024-fast' on page 2 undefined on input 
+line 78.
+
+
+Package natbib Warning: Citation `chen-2024-edt' on page 2 undefined on input l
+ine 80.
 
 
 Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
-on input line 77.
-
-[2]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.90 Analytic guarantee. If each step^^Y
-                                        s $(k,b)$ pair satisfies $k(t)\cdot ...
+on input line 80.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 Every $K$ steps^^T
-                        either fixed or solved analytically so that the runn...
+Package natbib Warning: Citation `ma-2024-learning' on page 2 undefined on inpu
+t line 82.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 ...t \varepsilon_t$ stays within $\delta$^^T
-                                                  the compressor stores an a...
-
-[3]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.114 The Hadamard^^Y
-                     s $\log d$ factor adds FLOPs, but the adaptive reductio...
+Package natbib Warning: Citation `yuan-2024-ditfastattn' on page 2 undefined on
+ input line 82.
 
 
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
+Package natbib Warning: Citation `salimans-2024-multistep' on page 2 undefined 
+on input line 82.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...hrm{f}\times 512^2$. Six cache regimes^^T
-                                                  vanilla, L2C, FCLC, DPC, S...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...DPC, Streamlined Inference and TA-FJLT^^T
-                                                  share identical generation...
-
-[4]
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.141 ... $256^2$ video generation on 8 GB GPUs^^T
-                                                  a capability previously ou...
-
-(./paper.bbl)
+[2] [3] [4] (./paper.bbl [5])
 
 Package natbib Warning: There were undefined citations.
 
-[5] (./paper.aux
+[6] (./paper.aux
 
 Package natbib Warning: Citation(s) may have changed.
 (natbib)                Rerun to get citations correct.
 
-) )
-(see the transcript file for additional information) </home/runner/.texlive2023
-/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on paper.pdf (5 pages, 145018 bytes).
+) ) </home/runner/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.6
+00pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on paper.pdf (6 pages, 149215 bytes).
 Transcript written on paper.log.
 This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
  restricted \write18 enabled.
@@ -1221,6 +970,8 @@ L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (./agents4science_2025.sty
 (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
 (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
@@ -1234,9 +985,6 @@ Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd))
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 For additional information on amsmath, use the `?' option.
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -1469,6 +1217,7 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
 (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
 (./paper.aux)
 *geometry* driver: auto-detecting
@@ -1541,11 +1290,8 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 [Loading MPS to PDF converter (version 2006.09.02).]
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
-
-Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
-ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
-your preamble.
- on input line 40.
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 (./paper.out) (./paper.out)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
@@ -1555,145 +1301,20 @@ your preamble.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
-! Text line contains an invalid character.
-l.45 ...t provably bounds the degradation in Fr^^@
-                                                  e9chet scores. On DiT-XL/2...
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd)
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.49 ...enerative models underpin much of today^^Y
-                                                  s image and video synthesi...
-
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
-dist/fonts/enc/dvips/base/8r.enc}]
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...} For video, store whichever difference^^T
-                                                  denoising-step or frame-ti...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.61 ...fference^^Tdenoising-step or frame-time^^T
-                                                  has the smaller norm, flag...
-
-! Text line contains an invalid character.
-l.64 ... \varepsilon_t$ bounds the change in Fr^^@
-                                                  e9chet scores; the schedul...
-
-[2]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.90 Analytic guarantee. If each step^^Y
-                                        s $(k,b)$ pair satisfies $k(t)\cdot ...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 Every $K$ steps^^T
-                        either fixed or solved analytically so that the runn...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 ...t \varepsilon_t$ stays within $\delta$^^T
-                                                  the compressor stores an a...
-
-
-Underfull \vbox (badness 1546) has occurred while \output is active [3]
-
-! LaTeX Error: Unicode character ^^Y (U+0019)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.114 The Hadamard^^Y
-                     s $\log d$ factor adds FLOPs, but the adaptive reductio...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...hrm{f}\times 512^2$. Six cache regimes^^T
-                                                  vanilla, L2C, FCLC, DPC, S...
-
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...DPC, Streamlined Inference and TA-FJLT^^T
-                                                  share identical generation...
-
-
-Underfull \vbox (badness 2591) has occurred while \output is active [4]
-
-! LaTeX Error: Unicode character ^^T (U+0014)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.141 ... $256^2$ video generation on 8 GB GPUs^^T
-                                                  a capability previously ou...
-
-(./paper.bbl [5]) [6] (./paper.aux) )
-(see the transcript file for additional information) </home/runner/.texlive2023
-/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on paper.pdf (6 pages, 146689 bytes).
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) [1{/var/lib/texmf/fon
+ts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/
+base/8r.enc}] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+[2] [3] [4] (./paper.bbl [5]) [6] (./paper.aux) ) </home/runner/.texlive2023/te
+xmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on paper.pdf (6 pages, 150460 bytes).
 Transcript written on paper.log.
