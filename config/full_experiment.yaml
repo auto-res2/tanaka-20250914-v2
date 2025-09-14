@@ -2,7 +2,7 @@
 # Full experiment configuration – illustrative example
 # =============================================================
 seed_list: [111]
-results_dir: .research/iteration29
+results_dir: .research/iteration30
 experiments:
   - id: memory_vs_quality
     models:
