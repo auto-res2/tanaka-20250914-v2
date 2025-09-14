@@ -1,1 +1,8 @@
-airas-template
+# LiMiT: Elastic, Reversible, and Rate–Distortion-Optimised Activation Memory for Diffusion Transformers
+> ⚠️ **NOTE:** This research is an automatic research using AIRAS.
+## Abstract
+Diffusion Transformers generate striking images and videos but exhaust GPU memory because every intermediate activation must reside in VRAM across dozens of denoising steps. Storing full-precision tensors is wasteful: their information content is far lower than their raw entropy and decreases as noise is removed. We propose LiMiT, a Learned Incremental Multi-granular Token memory that frames activation caching as an online rate–distortion problem. A perceptual-aware bit-budgeter allocates a bitrate per timestep; patch-wise vector-quantised residuals compress spatially local errors and drop negligible tiles; a reversible low-rank predictor keeps only a 16-dim latent per layer while guaranteeing exact gradients; and a lightweight reinforcement-learning scheduler expands or collapses the cache in response to moment-to-moment VRAM pressure. Two fused Triton kernels hide almost all overhead behind a single-line PyTorch API. On DiT-XL/2, Stable-Diffusion-XL, and ModelScope-v2, LiMiT stores just 0.10 bit per parameter—six to eight times less than the previous state of the art—changes FID by at most 0.015, cuts peak memory eight- to twelve-fold, adds under five per-cent latency, increases train-time batch size five-fold on a 12 GB cap, removes ninety per-cent of checkpoint recompute FLOPs, and prevents out-of-memory crashes under adversarial memory pressure. Code, kernels, and reproducibility artefacts are publicly released.
+
+- [Research history](https://github.com/auto-res2/tanaka-20250914-v2/blob/test-0/.research/research_history.json)
+- [GitHub Pages](https://auto-res2.github.io/tanaka-20250914-v2/branches/test-0/index.html)
+- [Devin execution log](https://app.devin.ai/sessions/66133c987e4447bf995c970046154610)
