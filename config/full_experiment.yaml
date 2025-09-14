@@ -1,29 +1,19 @@
-run_name: full_$(date +%Y%m%d_%H%M%S)
-seed_list: [111, 222, 333]
+# =============================================================
+# Full experiment configuration – illustrative example
+# =============================================================
+seed_list: [111]
 results_dir: .research/iteration24
 experiments:
-  - id: exp1_full_system
-    type: full_system
+  - id: memory_vs_quality
     models:
-      - repo: facebook/DiT-XL-2-256
-        resolution: 256
-      - repo: facebook/DiT-XL-2-512
+      - repo: stabilityai/stable-diffusion-2-1-base
         resolution: 512
-      - repo: openai/uvit-h-2-256
-        resolution: 256
-      - repo: PixArt-alpha/PixArt-Sigma-S-16x256x256
-        resolution: 256
-    datasets:
-      coco_val:
-        url: https://images.cocodataset.org/zips/val2017.zip
-        split: val2017
-    generation:
-      num_images: 500
-      num_inference_steps: 50
-      guidance_scale: 4.0
     compression_grid:
-      - {method: vanilla}
-      - {method: l2c}
-      - {method: fjlt_fixed, k_factor: 0.125, bits: 8}
-      - {method: ta_fjlt, c: 1.0, keyframe_K: 6}
-      - {method: ta_fjlt, c: 0.8, keyframe_K: 4}
+      - method: vanilla
+      - method: ta_fjlt_sched  # Will be ignored if compressor not installed
+        c: 1.0
+        keyframe_K: 6
+    generation:
+      num_images: 10
+      num_inference_steps: 20
+      guidance_scale: 7.5

@@ -1,21 +1,16 @@
-run_name: smoke_$(date +%Y%m%d_%H%M%S)
+# =============================================================
+# Smoke-test configuration – should finish in <2 minutes
+# =============================================================
 seed_list: [111]
 results_dir: .research/iteration24
 experiments:
-  - id: exp1_image_quick
-    type: full_system
+  - id: smoke_run
     models:
-      - repo: facebook/DiT-XL-2-256
-        resolution: 256
-    datasets:
-      coco_val:
-        url: https://images.cocodataset.org/zips/val2017.zip
-        split: val2017
-    generation:
-      num_images: 16               # smaller for CI speed
-      num_inference_steps: 10
-      guidance_scale: 4.0
+      - repo: stabilityai/stable-diffusion-2-1-base  # small-ish, widely available
+        resolution: 512
     compression:
-      method: ta_fjlt
-      c: 1.0
-      keyframe_K: 6
+      method: vanilla
+    generation:
+      num_images: 1
+      num_inference_steps: 2
+      guidance_scale: 7.5

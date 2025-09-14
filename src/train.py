@@ -1,18 +1,17 @@
 """
 src/train.py – training related utilities (currently not used)
 ----------------------------------------------------------------
-The original monolithic script contains no model-training logic; all
-experiments work with publicly available diffusion checkpoints.  A stub
-module is therefore provided so that future iterations can introduce
-fine-tuning or additional learning routines without changing the public
-API of `src.main`.
+A minimal stub kept for future fine-tuning work.  Nothing in the
+current experimental workflow calls a training routine, but we keep
+this module so that external scripts can safely import
+`src.train.noop_train` without having to add try/except guards.
 """
 from __future__ import annotations
 
 # -----------------------------------------------------------------------------
-# Placeholder function
+# Public no-op placeholder
 # -----------------------------------------------------------------------------
 
-def noop_train(*args, **kwargs):
+def noop_train(*args, **kwargs):  # pragma: no cover
     """A no-op training stub so that callers do not have to gate imports."""
     print("[train] No training routine implemented – skipping …")
