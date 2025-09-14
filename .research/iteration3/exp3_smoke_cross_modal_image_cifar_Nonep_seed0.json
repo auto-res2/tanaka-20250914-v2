@@ -1,0 +1,10 @@
+{
+  "variant": "orchid_cross_modal",
+  "resolution": null,
+  "seed": 0,
+  "latency_sec": 0.016181064999727823,
+  "peak_vram_gb": 0.0,
+  "energy_j": 2.826014583434563e-07,
+  "macs": 18874368.0,
+  "prompt_set": "image_cifar"
+}

@@ -3,8 +3,8 @@ global:
   dtype: float32
   batch_size: 1
   num_workers: 2
-  output_dir: .research/iteration2
-  figure_dir: .research/iteration2/images
+  output_dir: .research/iteration3
+  figure_dir: .research/iteration3/images
 experiments:
   - name: exp1_smoke_memory_fidelity
     type: image

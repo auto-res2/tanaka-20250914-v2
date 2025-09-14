@@ -1,0 +1,10 @@
+{
+  "variant": "orchid_full",
+  "resolution": 256,
+  "seed": 0,
+  "latency_sec": 0.028279492999899958,
+  "peak_vram_gb": 0.0,
+  "energy_j": 2.891113979420977e-07,
+  "macs": 18874368.0,
+  "prompt_set": "cifar10"
+}

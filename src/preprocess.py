@@ -30,6 +30,12 @@ def load_prompts(subset_cfg: Dict[str, str | int], *, cache_root: Path) -> List[
     cache_dir = cache_root / sha256(ds_name)
     cache_dir.mkdir(parents=True, exist_ok=True)
 
+    if ds_name == "cococaptions":
+        ds_name = "ms_coco"
+        field = "caption"
+    elif ds_name == "ms_coco":
+        field = "caption"
+    
     try:
         ds = load_dataset(ds_name, split=split, cache_dir=str(cache_dir))
     except Exception as e:  # pragma: no cover

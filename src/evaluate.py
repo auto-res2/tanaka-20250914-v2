@@ -98,8 +98,8 @@ class ExperimentRunner:
             device_str = "cpu"
         self.device = torch.device(device_str)
         self.dtype = getattr(torch, global_cfg["dtype"])
-        self.output_dir = Path(".research/iteration2").expanduser()
-        self.fig_dir = Path(".research/iteration2/images").expanduser()
+        self.output_dir = Path(".research/iteration3").expanduser()
+        self.fig_dir = Path(".research/iteration3/images").expanduser()
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.fig_dir.mkdir(parents=True, exist_ok=True)
 

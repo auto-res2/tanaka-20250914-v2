@@ -3,8 +3,8 @@ global:
   dtype: bfloat16
   batch_size: 4
   num_workers: 4
-  output_dir: .research/iteration2
-  figure_dir: .research/iteration2/images
+  output_dir: .research/iteration3
+  figure_dir: .research/iteration3/images
 experiments:
   - name: experiment1_memory_fidelity_pareto
     type: image
@@ -14,7 +14,7 @@ experiments:
       - 512
     prompt_sets:
       - tag: coco
-        dataset: cococaptions
+        dataset: ms_coco
         split: validation
         field: caption
         take: 100
@@ -61,7 +61,7 @@ experiments:
       - 20
       - 25
     prompts:
-      dataset: cococaptions
+      dataset: ms_coco
       split: validation
       field: caption
       take: 50
@@ -103,7 +103,7 @@ experiments:
         sample_rate: 16000
     prompt_sets:
       - tag: image_coco
-        dataset: cococaptions
+        dataset: ms_coco
         split: validation
         field: caption
         take: 30
