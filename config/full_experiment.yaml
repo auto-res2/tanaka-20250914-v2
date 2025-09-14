@@ -1,0 +1,61 @@
+global:
+  device: cuda
+  dtype: bfloat16
+  batch_size: 8
+  num_workers: 8
+  output_dir: results
+  figure_dir: figures
+experiments:
+  - name: experiment1_memory_fidelity_pareto
+    type: image
+    model: facebook/DiT-XL-2
+    resolutions:
+      - 256
+      - 512
+      - 1024
+      - 4096
+    prompt_sets:
+      - tag: coco
+        dataset: cococaptions
+        split: validation
+        field: caption
+        take: 5000
+      - tag: laion_art
+        dataset: laion/laion-art
+        split: train
+        field: TEXT
+        take: 2000
+      - tag: nih_xray
+        dataset: pmbaumgartner/nih-chest-xray-reports
+        split: test
+        field: report
+        take: 2000
+    sampler:
+      steps: 30
+      algorithm: dpm_solver++
+    method_variants:
+      - name: vanilla
+        cache: null
+      - name: l2c
+        cache:
+          backend: l2c
+      - name: remora
+        cache:
+          backend: remora
+      - name: orchid
+        cache:
+          rank_c: 16
+          rank_f: 8
+          ost_momentum: 0.005
+          enable_scp: false
+    metrics:
+      - fid
+      - sfid
+      - latency
+      - peak_vram
+      - macs
+      - energy
+    seeds:
+      - 0
+      - 1
+      - 2

@@ -1,0 +1,31 @@
+global:
+  device: cuda
+  dtype: bfloat16
+  batch_size: 2
+  num_workers: 4
+  output_dir: results
+  figure_dir: figures
+experiments:
+  - name: exp1_smoke_memory_fidelity
+    type: image
+    method_variants:
+      - name: vanilla
+        cache: null
+      - name: orchid
+        cache:
+          rank_c: 8
+          rank_f: 4
+          ost_momentum: 0.005
+          enable_scp: false
+    model: facebook/DiT-XL-2-256
+    resolution: 256
+    prompts:
+      dataset: cococaptions
+      split: validation
+      field: caption
+      take: 10
+    sampler:
+      steps: 4
+      algorithm: dpm_solver++
+    metrics:
+      - fid

@@ -1,1 +1,21 @@
-# Please list the required python packages.
+[project]
+name = "orchid_experiments"
+version = "0.1.0"
+requires-python = ">=3.9"
+readme = "README.md"
+dependencies = [
+    "torch>=1.9.0",
+    "torchvision>=0.10.0",
+    "diffusers>=0.21.0",
+    "datasets>=2.16.0",
+    "torchmetrics>=0.11.0",
+    "fvcore>=0.1.5.post20221221",
+    "codecarbon>=2.3.0",
+    "seaborn>=0.12.0",
+    "matplotlib>=3.4.0",
+    "PyYAML>=6.0",
+    "orchid==0.1.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
