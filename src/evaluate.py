@@ -70,7 +70,7 @@ def run_experiment(exp_cfg, global_cfg) -> None:
     # ------------------------------------------------------------------
     # Folder layout
     # ------------------------------------------------------------------
-    root_out = pathlib.Path(".research") / "iteration5"
+    root_out = pathlib.Path(".research") / "iteration6"
     img_root = root_out / "images" / exp_cfg["id"]
     res_root = root_out
     img_root.mkdir(parents=True, exist_ok=True)
