@@ -5,3 +5,252 @@
   publisher = {GitHub},
   url       = {https://github.com/airas-org/airas}
 }
+
+% ===========================================
+% REQUIRED CITATIONS
+% These papers must be cited in the manuscript
+% ===========================================
+
+@article{bulatov-2022-recurrent,
+ abstract = {Transformer-based models show their effectiveness across multiple domains and
+tasks. The self-attention allows to combine information from all sequence
+elements into context-aware representations. However, global and local
+information has to be stored mostly in the same element-wise representations.
+Moreover, the length of an input sequence is limited by quadratic computational
+complexity of self-attention.
+  In this work, we propose and study a memory-augmented segment-level recurrent
+Transformer (RMT). Memory allows to store and process local and global
+information as well as to pass information between segments of the long
+sequence with the help of recurrence.
+  We implement a memory mechanism with no changes to Transformer model by
+adding special memory tokens to the input or output sequence. Then the model is
+trained to control both memory operations and sequence representations
+processing.
+  Results of experiments show that RMT performs on par with the Transformer-XL
+on language modeling for smaller memory sizes and outperforms it for tasks that
+require longer sequence processing. We show that adding memory tokens to Tr-XL
+is able to improve its performance. This makes Recurrent Memory Transformer a
+promising architecture for applications that require learning of long-term
+dependencies and general purpose in memory processing, such as algorithmic
+tasks and reasoning.},
+ arxiv_url = {https://arxiv.org/pdf/2207.06881v2.pdf},
+ author = {Aydar Bulatov and Yuri Kuratov and Mikhail S. Burtsev},
+ github_url = {https://github.com/booydar/LM-RMT},
+ title = {Recurrent Memory Transformer},
+ year = {2022}
+}
+
+@article{chen-2024-edt,
+ abstract = {Transformer-based Diffusion Probabilistic Models (DPMs) have shown more
+potential than CNN-based DPMs, yet their extensive computational requirements
+hinder widespread practical applications. To reduce the computation budget of
+transformer-based DPMs, this work proposes the Efficient Diffusion Transformer
+(EDT) framework. The framework includes a lightweight-design diffusion model
+architecture, and a training-free Attention Modulation Matrix and its
+alternation arrangement in EDT inspired by human-like sketching. Additionally,
+we propose a token relation-enhanced masking training strategy tailored
+explicitly for EDT to augment its token relation learning capability. Our
+extensive experiments demonstrate the efficacy of EDT. The EDT framework
+reduces training and inference costs and surpasses existing transformer-based
+diffusion models in image synthesis performance, thereby achieving a
+significant overall enhancement. With lower FID, EDT-S, EDT-B, and EDT-XL
+attained speed-ups of 3.93x, 2.84x, and 1.92x respectively in the training
+phase, and 2.29x, 2.29x, and 2.22x respectively in inference, compared to the
+corresponding sizes of MDTv2. The source code is released at
+https://github.com/xinwangChen/EDT.},
+ arxiv_url = {https://arxiv.org/pdf/2410.23788v1.pdf},
+ author = {Xinwang Chen and Ning Liu and Yichen Zhu and Feifei Feng and Jian Tang},
+ title = {EDT: An Efficient Diffusion Transformer Framework Inspired by Human-like Sketching},
+ year = {2024}
+}
+
+@article{hintersdorf-2024-finding,
+ abstract = {Diffusion models (DMs) produce very detailed and high-quality images. Their
+power results from extensive training on large amounts of data, usually scraped
+from the internet without proper attribution or consent from content creators.
+Unfortunately, this practice raises privacy and intellectual property concerns,
+as DMs can memorize and later reproduce their potentially sensitive or
+copyrighted training images at inference time. Prior efforts prevent this issue
+by either changing the input to the diffusion process, thereby preventing the
+DM from generating memorized samples during inference, or removing the
+memorized data from training altogether. While those are viable solutions when
+the DM is developed and deployed in a secure and constantly monitored
+environment, they hold the risk of adversaries circumventing the safeguards and
+are not effective when the DM itself is publicly released. To solve the
+problem, we introduce NeMo, the first method to localize memorization of
+individual data samples down to the level of neurons in DMs' cross-attention
+layers. Through our experiments, we make the intriguing finding that in many
+cases, single neurons are responsible for memorizing particular training
+samples. By deactivating these memorization neurons, we can avoid the
+replication of training data at inference time, increase the diversity in the
+generated outputs, and mitigate the leakage of private and copyrighted data. In
+this way, our NeMo contributes to a more responsible deployment of DMs.},
+ arxiv_url = {https://arxiv.org/pdf/2406.02366v3.pdf},
+ author = {Dominik Hintersdorf and Lukas Struppek and Kristian Kersting and Adam Dziedzic and Franziska Boenisch},
+ github_url = {https://github.com/ml-research/localizing_memorization_in_diffusion_models},
+ title = {Finding NeMo: Localizing Neurons Responsible For Memorization in Diffusion Models},
+ year = {2024}
+}
+
+@article{ma-2024-learning,
+ abstract = {Diffusion Transformers have recently demonstrated unprecedented generative
+capabilities for various tasks. The encouraging results, however, come with the
+cost of slow inference, since each denoising step requires inference on a
+transformer model with a large scale of parameters. In this study, we make an
+interesting and somehow surprising observation: the computation of a large
+proportion of layers in the diffusion transformer, through introducing a
+caching mechanism, can be readily removed even without updating the model
+parameters. In the case of U-ViT-H/2, for example, we may remove up to 93.68%
+of the computation in the cache steps (46.84% for all steps), with less than
+0.01 drop in FID. To achieve this, we introduce a novel scheme, named
+Learning-to-Cache (L2C), that learns to conduct caching in a dynamic manner for
+diffusion transformers. Specifically, by leveraging the identical structure of
+layers in transformers and the sequential nature of diffusion, we explore
+redundant computations between timesteps by treating each layer as the
+fundamental unit for caching. To address the challenge of the exponential
+search space in deep models for identifying layers to cache and remove, we
+propose a novel differentiable optimization objective. An input-invariant yet
+timestep-variant router is then optimized, which can finally produce a static
+computation graph. Experimental results show that L2C largely outperforms
+samplers such as DDIM and DPM-Solver, alongside prior cache-based methods at
+the same inference speed. Code is available at
+https://github.com/horseee/learning-to-cache},
+ arxiv_url = {https://arxiv.org/pdf/2406.01733v2.pdf},
+ author = {Xinyin Ma and Gongfan Fang and Michael Bi Mi and Xinchao Wang},
+ github_url = {https://github.com/horseee/learning-to-cache},
+ title = {Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching},
+ year = {2024}
+}
+
+@article{salimans-2024-multistep,
+ abstract = {We present a new method for making diffusion models faster to sample. The
+method distills many-step diffusion models into few-step models by matching
+conditional expectations of the clean data given noisy data along the sampling
+trajectory. Our approach extends recently proposed one-step methods to the
+multi-step case, and provides a new perspective by interpreting these
+approaches in terms of moment matching. By using up to 8 sampling steps, we
+obtain distilled models that outperform not only their one-step versions but
+also their original many-step teacher models, obtaining new state-of-the-art
+results on the Imagenet dataset. We also show promising results on a large
+text-to-image model where we achieve fast generation of high resolution images
+directly in image space, without needing autoencoders or upsamplers.},
+ arxiv_url = {https://arxiv.org/pdf/2406.04103v1.pdf},
+ author = {Tim Salimans and Thomas Mensink and Jonathan Heek and Emiel Hoogeboom},
+ github_url = {https://github.com/google/jax},
+ title = {Multistep Distillation of Diffusion Models via Moment Matching},
+ year = {2024}
+}
+
+% ===========================================
+% REFERENCE CANDIDATES
+% Additional reference papers for context
+% ===========================================
+
+@article{ainslie-2020-etc,
+ abstract = {Transformer models have advanced the state of the art in many Natural
+Language Processing (NLP) tasks. In this paper, we present a new Transformer
+architecture, Extended Transformer Construction (ETC), that addresses two key
+challenges of standard Transformer architectures, namely scaling input length
+and encoding structured inputs. To scale attention to longer inputs, we
+introduce a novel global-local attention mechanism between global tokens and
+regular input tokens. We also show that combining global-local attention with
+relative position encodings and a Contrastive Predictive Coding (CPC)
+pre-training objective allows ETC to encode structured inputs. We achieve
+state-of-the-art results on four natural language datasets requiring long
+and/or structured inputs.},
+ arxiv_url = {https://arxiv.org/pdf/2004.08483v5.pdf},
+ author = {Joshua Ainslie and Santiago Ontanon and Chris Alberti and Vaclav Cvicek and Zachary Fisher and Philip Pham and Anirudh Ravula and Sumit Sanghai and Qifan Wang and Li Yang},
+ title = {Etc: Encoding long and structured data in transformers},
+ year = {2020}
+}
+
+@article{ba-2016-using,
+ abstract = {Until recently, research on artificial neural networks was largely restricted
+to systems with only two types of variable: Neural activities that represent
+the current or recent input and weights that learn to capture regularities
+among inputs, outputs and payoffs. There is no good reason for this
+restriction. Synapses have dynamics at many different time-scales and this
+suggests that artificial neural networks might benefit from variables that
+change slower than activities but much faster than the standard weights. These
+"fast weights" can be used to store temporary memories of the recent past and
+they provide a neurally plausible way of implementing the type of attention to
+the past that has recently proved very helpful in sequence-to-sequence models.
+By using fast weights we can avoid the need to store copies of neural activity
+patterns.},
+ arxiv_url = {https://arxiv.org/pdf/1610.06258v3.pdf},
+ author = {Jimmy Ba and Geoffrey Hinton and Volodymyr Mnih and Joel Z. Leibo and Catalin Ionescu},
+ title = {Using fast weights to attend to the recent past},
+ year = {2016}
+}
+
+@article{beltagy-2020-longformer,
+ abstract = {Transformer-based models are unable to process long sequences due to their
+self-attention operation, which scales quadratically with the sequence length.
+To address this limitation, we introduce the Longformer with an attention
+mechanism that scales linearly with sequence length, making it easy to process
+documents of thousands of tokens or longer. Longformer's attention mechanism is
+a drop-in replacement for the standard self-attention and combines a local
+windowed attention with a task motivated global attention. Following prior work
+on long-sequence transformers, we evaluate Longformer on character-level
+language modeling and achieve state-of-the-art results on text8 and enwik8. In
+contrast to most prior work, we also pretrain Longformer and finetune it on a
+variety of downstream tasks. Our pretrained Longformer consistently outperforms
+RoBERTa on long document tasks and sets new state-of-the-art results on WikiHop
+and TriviaQA. We finally introduce the Longformer-Encoder-Decoder (LED), a
+Longformer variant for supporting long document generative sequence-to-sequence
+tasks, and demonstrate its effectiveness on the arXiv summarization dataset.},
+ arxiv_url = {https://arxiv.org/pdf/2004.05150v2.pdf},
+ author = {Iz Beltagy and Matthew E. Peters and Arman Cohan},
+ title = {Longformer: The long-document transformer},
+ year = {2020}
+}
+
+@article{burtsev-2020-memory,
+ abstract = {Transformer-based models have achieved state-of-the-art results in many
+natural language processing tasks. The self-attention architecture allows
+transformer to combine information from all elements of a sequence into
+context-aware representations. However, information about the context is stored
+mostly in the same element-wise representations. This might limit the
+processing of properties related to the sequence as a whole more difficult.
+Adding trainable memory to selectively store local as well as global
+representations of a sequence is a promising direction to improve the
+Transformer model. Memory-augmented neural networks (MANNs) extend traditional
+neural architectures with general-purpose memory for representations. MANNs
+have demonstrated the capability to learn simple algorithms like Copy or
+Reverse and can be successfully trained via backpropagation on diverse tasks
+from question answering to language modeling outperforming RNNs and LSTMs of
+comparable complexity. In this work, we propose and study few extensions of the
+Transformer baseline (1) by adding memory tokens to store non-local
+representations, (2) creating memory bottleneck for the global information, (3)
+controlling memory update with dedicated layer. We evaluate these memory
+augmented Transformers and demonstrate that presence of memory positively
+correlates with the model performance for machine translation and language
+modelling tasks. Augmentation of pre-trained masked language model with memory
+tokens shows mixed results for tasks from GLUE benchmark. Visualization of
+attention patterns over the memory suggest that it improves the model's ability
+to process a global context.},
+ arxiv_url = {https://arxiv.org/pdf/2006.11527v2.pdf},
+ author = {Mikhail S. Burtsev and Yuri Kuratov and Anton Peganov and Grigory V. Sapunov},
+ title = {Memory transformer},
+ year = {2020}
+}
+
+@article{child-2019-generating,
+ abstract = {Transformers are powerful sequence models, but require time and memory that
+grows quadratically with the sequence length. In this paper we introduce sparse
+factorizations of the attention matrix which reduce this to $O(n \sqrt{n})$. We
+also introduce a) a variation on architecture and initialization to train
+deeper networks, b) the recomputation of attention matrices to save memory, and
+c) fast attention kernels for training. We call networks with these changes
+Sparse Transformers, and show they can model sequences tens of thousands of
+timesteps long using hundreds of layers. We use the same architecture to model
+images, audio, and text from raw bytes, setting a new state of the art for
+density modeling of Enwik8, CIFAR-10, and ImageNet-64. We generate
+unconditional samples that demonstrate global coherence and great diversity,
+and show it is possible in principle to use self-attention to model sequences
+of length one million or more.},
+ arxiv_url = {https://arxiv.org/pdf/1904.10509v1.pdf},
+ author = {Rewon Child and Scott Gray and Alec Radford and Ilya Sutskever},
+ title = {Generating long sequences with sparse transformers},
+ year = {2019}
+}
