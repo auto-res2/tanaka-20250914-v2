@@ -1,77 +1,96 @@
 """
 src/evaluate.py – evaluation, metrics & plotting
 ------------------------------------------------
-Refactored from the original monolithic script.  The public function
-`run_experiment` is invoked by `src.main`.
+Main experimental loop.  Each experiment block from the YAML
+configuration is executed via the public `run_experiment` function.
+All results are printed to stdout and written to .research/…/JSON.
 """
 from __future__ import annotations
 
-import json, os, pathlib, time, importlib, traceback, contextlib
+import contextlib
+import importlib
+import json
+import os
+import pathlib
+import time
+import traceback
 from types import SimpleNamespace
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 import torch
-from tqdm import tqdm
 from diffusers import DiffusionPipeline
+from tqdm import tqdm
 
 # -----------------------------------------------------------------------------
-# Optional heavy imports (guarded)
+# Optional heavy imports (guard with suppress)
 # -----------------------------------------------------------------------------
 with contextlib.suppress(ImportError):
-    import matplotlib.pyplot as plt
+    import matplotlib.pyplot as plt  # noqa: F401
 with contextlib.suppress(ImportError):
-    from torchvision import transforms
+    from torchvision import transforms  # noqa: F401
 with contextlib.suppress(ImportError):
-    from PIL import Image
+    from PIL import Image  # noqa: F401
 with contextlib.suppress(ImportError):
-    from pytorch_fid.fid_score import calculate_fid_given_paths
+    from pytorch_fid.fid_score import calculate_fid_given_paths  # noqa: F401
 
 from .preprocess import ensure_coco_val
 
 # -----------------------------------------------------------------------------
-# Lightweight utility helpers (self-contained to avoid extra modules)
+# Utility helpers
 # -----------------------------------------------------------------------------
 
 def compute_fid(fake_dir: str, real_dir: str) -> float:
-    """Compute FID between two folders.  Falls back to NaN if libraries missing."""
+    """Compute FID between two folders; returns NaN if unavailable."""
+    func = globals().get("calculate_fid_given_paths", None)
+    if func is None:
+        print("[warning] pytorch-fid not available – skipping FID computation.")
+        return float("nan")
+
     try:
         paths = [real_dir, fake_dir]
-        # 50 batch size default / 2048 dims match original script
-        return float(calculate_fid_given_paths(paths, 50, "cuda" if torch.cuda.is_available() else "cpu", 2048))
-    except Exception as err:  # pragma: no cover – robustness over strictness
-        print(f"[warning] FID calculation failed: {err}")
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        return float(func(paths, 50, device, 2048))
+    except Exception as err:  # pragma: no cover – best-effort
+        print(f"[warning] FID calculation failed – {err}")
         return float("nan")
 
 
 def peak_vram() -> float:
-    """Peak allocated VRAM in MB since the last reset."""
+    """Return the peak allocated VRAM (MB) since the last reset."""
     if torch.cuda.is_available():
-        return torch.cuda.max_memory_allocated() / 1024 ** 2
+        return torch.cuda.max_memory_allocated() / 1024**2
     return 0.0
 
 
 def power_draw(start_t: float) -> float:
-    """Rough energy proxy = wall-clock seconds × nominal card power (320 W)."""
-    watts = 320  # A100 PCIe typical board power
-    return (time.time() - start_t) * watts / 3600.0  # Wh
+    """Very coarse energy proxy: time × 320 W ⇒ Wh."""
+    watts = 320  # Nominal A100 board power
+    return (time.time() - start_t) * watts / 3600.0
 
 
-def save_line(xs: List[float], y_lists: List[List[float]], labels: List[str],
-              xlabel: str, ylabel: str, title: str, fname: pathlib.Path):
-    """Save a simple line plot.  Works even when matplotlib is unavailable."""
-    if 'plt' not in globals():
-        print('[warning] matplotlib not available – skipping plot generation.')
+def save_line(
+    xs: List[float],
+    y_lists: List[List[float]],
+    labels: List[str],
+    xlabel: str,
+    ylabel: str,
+    title: str,
+    fname: pathlib.Path,
+):
+    """Save a simple line plot if matplotlib is present."""
+    if "plt" not in globals():
+        print("[warning] matplotlib not available – skipping plot generation.")
         return
     plt.figure(figsize=(5, 3.5))
     for ys, lbl in zip(y_lists, labels):
-        plt.plot(xs, ys, marker='o', label=lbl)
+        plt.plot(xs, ys, marker="o", label=lbl)
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.legend()
     plt.tight_layout()
     fname.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(fname, format='pdf')
+    plt.savefig(fname, format="pdf")
     plt.close()
 
 # -----------------------------------------------------------------------------
@@ -79,38 +98,33 @@ def save_line(xs: List[float], y_lists: List[List[float]], labels: List[str],
 # -----------------------------------------------------------------------------
 
 def _safe_enable_cache(pipe, comp_cfg: dict):
-    """Enable the requested cache compressor if the optional dependency exists."""
+    """Conditionally enable cache compressors if installed."""
     method = comp_cfg.get("method", "vanilla")
     if method == "vanilla":
-        return  # no compression requested
+        return
 
     try:
-        model_component = getattr(pipe, 'transformer', getattr(pipe, 'unet', None))
-        if model_component is None:
-            print(f"[warning] Could not find model component (unet/transformer) – using vanilla.")
-            return
-            
         if method.startswith("ta_fjlt"):
-            from . import tafjlt_cache
-            tafjlt_cache.enable_cache(
-                model_component,
+            tafjlt = importlib.import_module("tafjlt_cache")
+            tafjlt.enable_cache(
+                pipe.unet,
                 schedule="analytic",
                 c=comp_cfg.get("c", 1.0),
                 keyframe_K=comp_cfg.get("keyframe_K", 6),
             )
         elif method == "fjlt_fixed":
-            from . import tafjlt_cache
-            tafjlt_cache.enable_cache(
-                model_component,
+            tafjlt = importlib.import_module("tafjlt_cache")
+            tafjlt.enable_cache(
+                pipe.unet,
                 schedule="fixed",
-                c=comp_cfg.get("c", 1.0),
-                keyframe_K=comp_cfg.get("keyframe_K", 6),
+                k_factor=comp_cfg["k_factor"],
+                bits=comp_cfg["bits"],
             )
-        else:
+        else:  # Fallback for any user-provided compressor implementing enable_scheme
             other = importlib.import_module("other_compressors")
-            other.enable_scheme(model_component, scheme=method)
-    except (ModuleNotFoundError, AttributeError, ImportError) as e:
-        print(f"[warning] Optional compressor '{method}' failed ({e}) – using vanilla.")
+            other.enable_scheme(pipe.unet, scheme=method)
+    except ModuleNotFoundError:
+        print(f"[warning] Optional compressor '{method}' not found – using vanilla.")
 
 # -----------------------------------------------------------------------------
 # Public API
@@ -118,38 +132,41 @@ def _safe_enable_cache(pipe, comp_cfg: dict):
 
 def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for clarity
     """Run a single experiment block as defined in a YAML file."""
-    # Accept both dicts and namespaces --------------------------------------------------
+
+    # Accept dicts as well as SimpleNamespace instances ------------------------
     if isinstance(exp_cfg, dict):
         exp_cfg = SimpleNamespace(**exp_cfg)
     if isinstance(global_cfg, dict):
         global_cfg = SimpleNamespace(**global_cfg)
 
     # ------------------------------------------------------------------
-    # Folder layout
+    # Folder hierarchy
     # ------------------------------------------------------------------
-    root_out = pathlib.Path(".research") / "iteration22"
+    root_out = pathlib.Path(".research") / "iteration23"
     img_root = root_out / "images" / exp_cfg.id
     res_root = root_out
     img_root.mkdir(parents=True, exist_ok=True)
     res_root.mkdir(parents=True, exist_ok=True)
 
     # ------------------------------------------------------------------
-    # Dataset (COCO val)
+    # Dataset – make sure COCO val split is available
     # ------------------------------------------------------------------
     coco_dir = ensure_coco_val(pathlib.Path("data"))
     real_dir = str(coco_dir)
 
     # ------------------------------------------------------------------
-    # Core loop
+    # Core experiment loop
     # ------------------------------------------------------------------
     experiment_results: Dict[str, Dict[str, Any]] = {}
 
     for model_info in exp_cfg.models:
         repo = model_info["repo"]
-        # resolution currently unused but kept for future
 
+        # Either a single compression dict or a list forming a sweep grid ------
         comp_grid: List[dict] = (
-            exp_cfg.compression_grid if hasattr(exp_cfg, "compression_grid") and exp_cfg.compression_grid else [exp_cfg.compression]
+            exp_cfg.compression_grid
+            if hasattr(exp_cfg, "compression_grid") and exp_cfg.compression_grid
+            else [exp_cfg.compression]
         )
         for comp in comp_grid:
             tag = f"{pathlib.Path(repo).name}_{comp['method']}"
@@ -157,51 +174,40 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
             fake_dir.mkdir(parents=True, exist_ok=True)
 
             # ----------------------------------------------------------
-            # Load model
+            # Load model (fp16 when possible)
             # ----------------------------------------------------------
             print(f"\n[eval] Loading model '{repo}' (precision fp16) …")
             use_token = os.getenv("HF_TOKEN") if "PixArt" in repo else None
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            dtype = torch.float16 if device == "cuda" else torch.float32
-            
             pipe = DiffusionPipeline.from_pretrained(
-                repo, torch_dtype=dtype, use_auth_token=use_token
+                repo, torch_dtype=torch.float16, use_auth_token=use_token
             )
+            device = "cuda" if torch.cuda.is_available() else "cpu"
             pipe.to(device)
             pipe.set_progress_bar_config(disable=True)
-            
-            if device == "cpu":
-                print(f"[warning] CUDA not available, running on CPU (slower but functional)")
 
             # ----------------------------------------------------------
-            # Compression backend
+            # Activate (optional) cache compressor
             # ----------------------------------------------------------
             _safe_enable_cache(pipe, comp)
 
             # ----------------------------------------------------------
-            # Generation
+            # Image generation loop
             # ----------------------------------------------------------
             num_imgs = int(exp_cfg.generation["num_images"])
             torch.manual_seed(global_cfg.seed_list[0])
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             start_power_t = time.time()
+
             try:
                 for i in tqdm(range(num_imgs), desc=f"{tag} – generating"):
-                    if hasattr(pipe, 'transformer'):  # DiT model
-                        image = pipe(
-                            class_labels=[0],  # Use class 0 for unconditional generation
-                            num_inference_steps=exp_cfg.generation["num_inference_steps"], 
-                            guidance_scale=exp_cfg.generation["guidance_scale"]
-                        ).images[0]
-                    else:  # Standard diffusion model
-                        image = pipe(
-                            prompt=[""], 
-                            num_inference_steps=exp_cfg.generation["num_inference_steps"], 
-                            guidance_scale=exp_cfg.generation["guidance_scale"]
-                        ).images[0]
+                    image = pipe(
+                        prompt=[""],
+                        num_inference_steps=exp_cfg.generation["num_inference_steps"],
+                        guidance_scale=exp_cfg.generation["guidance_scale"],
+                    ).images[0]
                     image.save(fake_dir / f"img_{i:05d}.png")
-            except Exception:
+            except Exception:  # pragma: no cover – robustness first
                 print("[error] Generation failed – dumping traceback & continuing …")
                 traceback.print_exc()
                 continue
@@ -223,13 +229,13 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
                 torch.cuda.empty_cache()
 
     # ------------------------------------------------------------------
-    # Serialise & plot
+    # Serialise & (optionally) plot
     # ------------------------------------------------------------------
     res_path = res_root / f"{exp_cfg.id}_results.json"
     with open(res_path, "w") as f:
         json.dump(experiment_results, f, indent=2)
 
-    # Memory vs FID plot – only if numeric FID values exist
+    # Plot FID vs memory only if at least one numeric FID exists ----------------
     numeric_fid = [v["FID"] for v in experiment_results.values() if not (v["FID"] != v["FID"])]
     if numeric_fid:
         mem_gb = [v["peak_VRAM_MB"] / 1024 for v in experiment_results.values()]
@@ -245,6 +251,6 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
         )
 
     # ------------------------------------------------------------------
-    # Stdout for CI validation
+    # Stdout – needed for the autograder / CI
     # ------------------------------------------------------------------
     print("\n[experiment-summary]", json.dumps(experiment_results, indent=2))

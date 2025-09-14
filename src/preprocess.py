@@ -1,17 +1,20 @@
 """
-src/preprocess.py – data download & preprocessing utils
-------------------------------------------------------
-Refactored utility functions used by both training and evaluation.
+src/preprocess.py – data download & preprocessing helpers
+---------------------------------------------------------
+Only the COCO 2017 validation split is used in the current evaluation
+pipeline.  Additional datasets can be added following the same pattern.
 """
 from __future__ import annotations
 
-import pathlib, zipfile, urllib.request
+import pathlib
+import urllib.request
+import zipfile
 from typing import List
 
-from torchvision import transforms
 from PIL import Image
 from torch.utils.data import Dataset
 from tqdm import tqdm
+from torchvision import transforms
 
 DATA_ROOT = pathlib.Path("data").resolve()
 COCO_VAL_ZIP = "https://images.cocodataset.org/zips/val2017.zip"
@@ -37,11 +40,11 @@ def _download(url: str, dest: pathlib.Path) -> pathlib.Path:
     return dest
 
 # -----------------------------------------------------------------------------
-# COCO 2017 val split helper
+# COCO 2017 – validation split helper
 # -----------------------------------------------------------------------------
 
 def ensure_coco_val(dest_root: pathlib.Path = DATA_ROOT) -> pathlib.Path:
-    """Download & extract the COCO val2017 image folder if not present."""
+    """Download & extract the COCO val2017 image folder if necessary."""
     zip_path = _download(COCO_VAL_ZIP, dest_root / "coco_val2017.zip")
     extract_dir = dest_root / "coco" / "val2017"
     if extract_dir.exists():
@@ -53,20 +56,33 @@ def ensure_coco_val(dest_root: pathlib.Path = DATA_ROOT) -> pathlib.Path:
     return extract_dir
 
 # -----------------------------------------------------------------------------
-# PyTorch dataset wrapper (images only – captions omitted)
+# PyTorch Dataset wrapper (images only – captions omitted)
 # -----------------------------------------------------------------------------
+
 class CocoValDataset(Dataset):
+    """Tiny wrapper exposing COCO validation images as tensors."""
+
     def __init__(self, root: pathlib.Path, resolution: int):
         self.root = root
         self.files: List[pathlib.Path] = sorted(root.glob("*.jpg"))
         if not self.files:
-            raise RuntimeError(f"No *.jpg files found in {root}. Did the download succeed?")
-        self.transform = transforms.Compose([
-            transforms.CenterCrop(min(Image.open(self.files[0]).size)),
-            transforms.Resize((resolution, resolution), interpolation=transforms.InterpolationMode.BICUBIC),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5], [0.5]),
-        ])
+            raise RuntimeError(
+                f"No *.jpg files found in {root}.  Did the download succeed?"
+            )
+        # Lazy import of first image to obtain HW for centre-crop size
+        with Image.open(self.files[0]) as img0:
+            crop_size = min(img0.size)
+        self.transform = transforms.Compose(
+            [
+                transforms.CenterCrop(crop_size),
+                transforms.Resize(
+                    (resolution, resolution),
+                    interpolation=transforms.InterpolationMode.BICUBIC,
+                ),
+                transforms.ToTensor(),
+                transforms.Normalize([0.5], [0.5]),
+            ]
+        )
 
     def __len__(self):
         return len(self.files)
