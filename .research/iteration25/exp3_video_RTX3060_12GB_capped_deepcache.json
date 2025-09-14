@@ -1,0 +1,11 @@
+{
+  "hardware": "RTX3060_12GB_capped",
+  "method": "deepcache",
+  "peak_memory_gb": 12.1,
+  "latency_per_frame_ms": 1420,
+  "fvd_score": 115.8,
+  "clip_similarity": 0.851,
+  "energy_joules": 1680,
+  "oom_occurred": true,
+  "success_rate_128_frame": 0.67
+}
