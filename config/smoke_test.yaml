@@ -1,0 +1,21 @@
+run_name: smoke_$(date +%Y%m%d_%H%M%S)
+seed_list: [111]
+results_dir: .research/iteration1
+experiments:
+  - id: exp1_image_quick
+    type: full_system
+    models:
+      - repo: facebook/DiT-XL-2-256
+        resolution: 256
+    datasets:
+      coco_val:
+        url: https://images.cocodataset.org/zips/val2017.zip
+        split: val2017
+    generation:
+      num_images: 16               # smaller for CI speed
+      num_inference_steps: 10
+      guidance_scale: 4.0
+    compression:
+      method: ta_fjlt
+      c: 1.0
+      keyframe_K: 6

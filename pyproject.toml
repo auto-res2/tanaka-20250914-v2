@@ -1,1 +1,22 @@
-# Please list the required python packages.
+[project]
+name = "ta-fjlt-cache-experiments"
+version = "0.1.0"
+description = "Refactored multi-file project for TA-FJLT-Cache experiments"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+# The core experiment dependencies
+default = [
+    "pyyaml>=6.0",
+    "torch>=1.13.0",            # CUDA 11.7 wheels support A100
+    "torchvision>=0.14.0",
+    "diffusers>=0.24.0",
+    "pillow>=9.5.0",
+    "tqdm>=4.64.0",
+    "matplotlib>=3.7.0",
+    "pytorch-fid>=0.2.1",
+    "tafjlt-cache>=0.1.0",      # C++/CUDA kernels for the proposed method
+]
