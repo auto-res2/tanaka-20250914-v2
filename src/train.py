@@ -10,7 +10,11 @@ from typing import Callable, List
 
 import torch
 from torchvision import transforms as T
-from diffusers import DiTModel, DDPMScheduler
+from diffusers import DDPMScheduler
+try:
+    from diffusers import DiTModel
+except ImportError:
+    DiTModel = None
 
 # ---------------------------------------------------------------------
 # Helper utilities
@@ -43,7 +47,7 @@ IMAGE_POSTPROC: T.Compose = T.Compose([
 @timed
 @torch.no_grad()
 def sample_images(
-    model: DiTModel,
+    model,
     scheduler: DDPMScheduler,
     prompts: List[str],
     *,
@@ -62,11 +66,12 @@ def sample_images(
             batch, padding="max_length", max_length=128, return_tensors="pt"
         ).to(device)
 
+        sample_size = getattr(model, 'sample_size', None) or 256
         noise = torch.randn(
             len(batch),
             model.in_channels,
-            model.sample_size,
-            model.sample_size,
+            sample_size,
+            sample_size,
             device=device,
             dtype=dtype,
         )
@@ -76,7 +81,9 @@ def sample_images(
                 latent_model_input = scheduler.scale_model_input(latents, t)
                 noise_pred = model(
                     latent_model_input, t, encoder_hidden_states=text_inputs.input_ids
-                ).sample
+                )
+        if hasattr(noise_pred, 'sample'):
+            noise_pred = noise_pred.sample
             latents = scheduler.step(noise_pred, t, latents).prev_sample
 
         imgs = model.decode_first_stage(latents)  # BCHW in [-1,1] fp32

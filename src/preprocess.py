@@ -21,10 +21,11 @@ def sha256(text: str) -> str:
 def load_prompts(subset_cfg: Dict[str, str | int], *, cache_root: Path) -> List[str]:
     """Download (or load from local cache) a text field from a HF dataset."""
 
-    ds_name: str = subset_cfg["dataset"]
-    split: str = subset_cfg.get("split", "train")
-    field: str = subset_cfg["field"]
-    take: int | None = subset_cfg.get("take")
+    ds_name: str = str(subset_cfg["dataset"])
+    split: str = str(subset_cfg.get("split", "train"))
+    field: str = str(subset_cfg["field"])
+    take_raw = subset_cfg.get("take")
+    take: int | None = int(take_raw) if take_raw is not None else None
 
     cache_dir = cache_root / sha256(ds_name)
     cache_dir.mkdir(parents=True, exist_ok=True)

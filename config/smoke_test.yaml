@@ -1,31 +1,88 @@
 global:
-  device: cuda
-  dtype: bfloat16
-  batch_size: 2
-  num_workers: 4
-  output_dir: results
-  figure_dir: figures
+  device: cpu
+  dtype: float32
+  batch_size: 1
+  num_workers: 2
+  output_dir: .research/iteration2
+  figure_dir: .research/iteration2/images
 experiments:
   - name: exp1_smoke_memory_fidelity
     type: image
     method_variants:
       - name: vanilla
         cache: null
-      - name: orchid
+      - name: orchid_hsb
         cache:
-          rank_c: 8
-          rank_f: 4
+          rank_c: 4
+          rank_f: 2
           ost_momentum: 0.005
           enable_scp: false
+      - name: orchid_full
+        cache:
+          rank_c: 4
+          rank_f: 2
+          ost_momentum: 0.005
+          enable_scp: true
     model: facebook/DiT-XL-2-256
     resolution: 256
     prompts:
-      dataset: cococaptions
-      split: validation
-      field: caption
-      take: 10
+      dataset: cifar10
+      split: test
+      field: label
+      take: 5
     sampler:
       steps: 4
       algorithm: dpm_solver++
     metrics:
-      - fid
+      - latency
+      - peak_vram
+  - name: exp2_smoke_reuse_window
+    type: image
+    model: facebook/DiT-XL-2-256
+    resolution: 256
+    reuse_windows:
+      - 5
+      - 10
+    prompts:
+      dataset: cifar10
+      split: test
+      field: label
+      take: 3
+    sampler:
+      steps: 12
+      algorithm: dpm_solver++
+    method_variants:
+      - name: orchid_scp
+        cache:
+          rank_c: 4
+          rank_f: 2
+          enable_scp: true
+    metrics:
+      - latency
+    seeds:
+      - 0
+  - name: exp3_smoke_cross_modal
+    type: multimodal
+    models:
+      - name: image_dit
+        model: facebook/DiT-XL-2-256
+        resolution: 256
+    prompt_sets:
+      - tag: image_cifar
+        dataset: cifar10
+        split: test
+        field: label
+        take: 3
+    sampler:
+      steps: 6
+      algorithm: dpm_solver++
+    method_variants:
+      - name: orchid_cross_modal
+        cache:
+          rank_c: 4
+          rank_f: 2
+          enable_scp: false
+    metrics:
+      - latency
+    seeds:
+      - 0

@@ -1,56 +1,48 @@
 global:
   device: cuda
   dtype: bfloat16
-  batch_size: 8
-  num_workers: 8
-  output_dir: results
-  figure_dir: figures
+  batch_size: 4
+  num_workers: 4
+  output_dir: .research/iteration2
+  figure_dir: .research/iteration2/images
 experiments:
   - name: experiment1_memory_fidelity_pareto
     type: image
-    model: facebook/DiT-XL-2
+    model: facebook/DiT-XL-2-256
     resolutions:
       - 256
       - 512
-      - 1024
-      - 4096
     prompt_sets:
       - tag: coco
         dataset: cococaptions
         split: validation
         field: caption
-        take: 5000
-      - tag: laion_art
-        dataset: laion/laion-art
-        split: train
-        field: TEXT
-        take: 2000
-      - tag: nih_xray
-        dataset: pmbaumgartner/nih-chest-xray-reports
+        take: 100
+      - tag: cifar10
+        dataset: cifar10
         split: test
-        field: report
-        take: 2000
+        field: label
+        take: 50
     sampler:
-      steps: 30
+      steps: 12
       algorithm: dpm_solver++
     method_variants:
       - name: vanilla
         cache: null
-      - name: l2c
-        cache:
-          backend: l2c
-      - name: remora
-        cache:
-          backend: remora
-      - name: orchid
+      - name: orchid_hsb
         cache:
           rank_c: 16
           rank_f: 8
           ost_momentum: 0.005
           enable_scp: false
+      - name: orchid_full
+        cache:
+          rank_c: 16
+          rank_f: 8
+          ost_momentum: 0.005
+          enable_scp: true
     metrics:
       - fid
-      - sfid
       - latency
       - peak_vram
       - macs
@@ -58,4 +50,84 @@ experiments:
     seeds:
       - 0
       - 1
-      - 2
+  - name: experiment2_reuse_window_analysis
+    type: image
+    model: facebook/DiT-XL-2-256
+    resolution: 256
+    reuse_windows:
+      - 5
+      - 10
+      - 15
+      - 20
+      - 25
+    prompts:
+      dataset: cococaptions
+      split: validation
+      field: caption
+      take: 50
+    sampler:
+      steps: 30
+      algorithm: dpm_solver++
+    method_variants:
+      - name: orchid_linear
+        cache:
+          rank_c: 16
+          rank_f: 8
+          enable_scp: false
+      - name: orchid_scp_skew
+        cache:
+          rank_c: 16
+          rank_f: 8
+          enable_scp: true
+      - name: orchid_scp_free
+        cache:
+          rank_c: 16
+          rank_f: 8
+          enable_scp: true
+          backend: orchid_free
+    metrics:
+      - fid
+      - latency
+      - macs
+    seeds:
+      - 0
+      - 1
+  - name: experiment3_cross_modal_deployment
+    type: multimodal
+    models:
+      - name: image_dit
+        model: facebook/DiT-XL-2-256
+        resolution: 256
+      - name: audio_mock
+        model: mock_audio_diffuser
+        sample_rate: 16000
+    prompt_sets:
+      - tag: image_coco
+        dataset: cococaptions
+        split: validation
+        field: caption
+        take: 30
+      - tag: audio_mock
+        dataset: mock_audio
+        split: test
+        field: description
+        take: 20
+    sampler:
+      steps: 15
+      algorithm: dpm_solver++
+    method_variants:
+      - name: vanilla
+        cache: null
+      - name: orchid_cross_modal
+        cache:
+          rank_c: 12
+          rank_f: 6
+          ost_momentum: 0.005
+          enable_scp: true
+          sparse_ratio: 0.2
+    metrics:
+      - fid
+      - latency
+      - peak_vram
+    seeds:
+      - 0

@@ -1,0 +1,10 @@
+{
+  "variant": "orchid_scp",
+  "resolution": 256,
+  "seed": 0,
+  "latency_sec": 0.02277783600015937,
+  "peak_vram_gb": 0.0,
+  "energy_j": 2.861211175231655e-07,
+  "macs": 18874368.0,
+  "prompt_set": "cifar10"
+}
