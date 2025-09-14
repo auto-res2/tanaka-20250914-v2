@@ -4,20 +4,19 @@ version = "0.1.0"
 description = "Refactored multi-file project for TA-FJLT-Cache experiments"
 requires-python = ">=3.9"
 
+# Package discovery
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[project.optional-dependencies]
-# The core experiment dependencies
-default = [
+# Core dependencies (array form as required by validator)
+dependencies = [
     "pyyaml>=6.0",
-    "torch>=1.13.0",            # CUDA 11.7 wheels support A100
+    "torch>=1.13.0",
     "torchvision>=0.14.0",
     "diffusers>=0.24.0",
     "pillow>=9.5.0",
     "tqdm>=4.64.0",
     "matplotlib>=3.7.0",
     "pytorch-fid>=0.2.1",
-    "scipy>=1.9.0",             # For FID computation
-    "numpy>=1.21.0",            # For numerical operations
+    "tafjlt-cache>=0.1.0"
 ]

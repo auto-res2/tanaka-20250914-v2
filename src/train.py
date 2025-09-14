@@ -9,7 +9,9 @@ API of `src.main`.
 """
 from __future__ import annotations
 
-# Placeholder function ---------------------------------------------------------
+# -----------------------------------------------------------------------------
+# Placeholder function
+# -----------------------------------------------------------------------------
 
 def noop_train(*args, **kwargs):
     """A no-op training stub so that callers do not have to gate imports."""
