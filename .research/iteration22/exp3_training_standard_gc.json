@@ -1,0 +1,8 @@
+{
+  "method": "standard_gc",
+  "batch_size": 2,
+  "imgs_per_sec": 17.0,
+  "peak_memory_gb": 11.6,
+  "backward_flops_e15": 1.92,
+  "val_fid": 5.18
+}
