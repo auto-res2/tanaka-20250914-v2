@@ -1,0 +1,9 @@
+{
+  "imgs": 5,
+  "latency_s": 0.08216633796691894,
+  "mem_peak_GB": 0.0,
+  "feat_norm": 10.499465942382812,
+  "method": "LiMiT",
+  "lambda_bpp": 0.1,
+  "resolution": 224
+}
