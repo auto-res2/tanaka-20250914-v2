@@ -127,7 +127,7 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
     # ------------------------------------------------------------------
     # Folder layout
     # ------------------------------------------------------------------
-    root_out = pathlib.Path(".research") / "iteration18"
+    root_out = pathlib.Path(".research") / "iteration19"
     img_root = root_out / "images" / exp_cfg.id
     res_root = root_out
     img_root.mkdir(parents=True, exist_ok=True)
