@@ -3,5 +3,25 @@
   "queries": [
     "memory-efficient diffusion transformer",
     "diffusion transformer memory optimization"
+  ],
+  "research_study_list": [
+    {
+      "title": "EDT: An Efficient Diffusion Transformer Framework Inspired by Human-like Sketching"
+    },
+    {
+      "title": "Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching"
+    },
+    {
+      "title": "Multistep Distillation of Diffusion Models via Moment Matching"
+    },
+    {
+      "title": "Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching"
+    },
+    {
+      "title": "DiTFastAttn: Attention Compression for Diffusion Transformer Models"
+    },
+    {
+      "title": "Fast and Memory-Efficient Video Diffusion Using Streamlined Inference"
+    }
   ]
 }
