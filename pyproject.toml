@@ -3,12 +3,6 @@ name = "ta-fjlt-cache-experiments"
 version = "0.1.0"
 description = "Refactored multi-file project for TA-FJLT-Cache experiments"
 requires-python = ">=3.9"
-
-# Package discovery
-[tool.setuptools.packages.find]
-where = ["src"]
-
-# Core dependencies (array form as required by validator)
 dependencies = [
     "pyyaml>=6.0",
     "torch>=1.13.0",
@@ -18,5 +12,9 @@ dependencies = [
     "tqdm>=4.64.0",
     "matplotlib>=3.7.0",
     "pytorch-fid>=0.2.1",
-    "tafjlt-cache>=0.1.0"
+    "scipy>=1.9.0",
+    "numpy>=1.21.0"
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
