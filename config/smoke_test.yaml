@@ -1,6 +1,6 @@
 run_name: smoke_$(date +%Y%m%d_%H%M%S)
 seed_list: [111]
-results_dir: .research/iteration21
+results_dir: .research/iteration22
 experiments:
   - id: exp1_image_quick
     type: full_system
