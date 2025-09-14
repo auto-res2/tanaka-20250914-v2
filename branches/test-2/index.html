@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Paper</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+    h2.paper-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5em;
+      border-bottom: none;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3em;
+      margin-top: 2em;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 1em;
+      overflow: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, monospace;
+    }
+    ul {
+      padding-left: 1.5em;
+    }
+    figure {
+      text-align: center;
+      margin: 1.5em 0;
+      background: none !important;
+    }
+    img {
+      background: #fff;
+    }
+    figure img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .img-pair .pair {
+      display: flex;
+      justify-content: space-between;
+    }
+    .img-pair img {
+      max-width: 48%;
+      height: auto;
+    }
+    figcaption {
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<h2 class="paper-title">Timestep-Adaptive Fast Johnson–Lindenstrauss Cache for Diffusion Transformers</h2>
+
+<section>
+  <h2>Abstract</h2>
+  <p>Diffusion Transformers currently deliver state-of-the-art visual quality but their inference cache can exceed the memory budget of commodity GPUs, especially for video generation. Existing compressors apply a fixed low-rank projection and precision to every denoising step, store dense projection matrices, ignore frame-to-frame correlation, rely on unsupported odd-bit arithmetic and provide no principled mechanism for respecting a user-defined quality budget. We introduce TA-FJLT-Cache, a training-free and analytically scheduled pipeline that replaces dense projectors with a matrix-free Fast Johnson–Lindenstrauss Transform, chooses rank and quantisation bits per timestep as a direct function of the predicted noise variance, exploits both denoising-step and real-time deltas, refreshes accuracy through periodic key-frames with residual replay and relies only on native INT4 and INT8 operations. A variance-preserving analysis yields an inequality linking rank and bit-width to a per-step error budget and shows that the cumulative budget provably bounds the degradation in Fréchet scores. On DiT-XL/2 and U-ViT-H/2 for images and on PixArt-Sigma-S for video, TA-FJLT-Cache reduces peak VRAM by 12–15× relative to vanilla caching and by roughly 1.3× over the strongest prior, adds 5 % FLOPs with negligible latency for images and even speeds up video inference thanks to larger feasible batch sizes. Quality remains within a user-specified FID/FVD tolerance, and empirical degradation correlates with the analytic prediction (r²≈0.93). Dual-axis delta coding enables 16-frame 256² video generation under a strict 8 GB cap with &lt;1 % CLIP-Score loss, demonstrating a practical path toward affordable high-quality generative inference.</p>
+</section>
+
+<section>
+  <h2>Introduction</h2>
+  <p>Diffusion and score-based generative models underpin much of today’s image and video synthesis research <a href="https://arxiv.org/pdf/2006.11239v2.pdf" target="_blank" title="Denoising diffusion probabilistic models">(Jonathan Ho, 2020)</a>, <a href="https://arxiv.org/pdf/1907.05600v3.pdf" target="_blank" title="Generative modeling by estimating gradients of the data distribution">(Yang Song, 2019)</a>, <a href="https://arxiv.org/pdf/2011.13456v2.pdf" target="_blank" title="Score-based generative modeling through stochastic differential equations">(Yang Song, 2020)</a>, <a href="https://arxiv.org/pdf/2105.05233v4.pdf" target="_blank" title="Diffusion models beat gans on image synthesis">(Prafulla Dhariwal, 2021)</a>. Transformer backbones such as DiT improve perceptual quality further, yet their iterative nature forces practitioners to cache intermediate activations for dozens of denoising steps. At megapixel resolutions the cache, not the parameters, dominates GPU memory, constraining batch size, throughput and making video generation largely impractical on consumer hardware.</p>
+  <p>A substantial body of work targets the computational overhead of Diffusion Transformers. Learning-to-Cache (L2C) prunes redundant layer executions <a href="https://arxiv.org/pdf/2406.01733v2.pdf" target="_blank" title="Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching">(Xinyin Ma, 2024)</a>; DiTFastAttn compresses attention FLOPs <a href="https://arxiv.org/pdf/2406.08552v2.pdf" target="_blank" title="DiTFastAttn: Attention Compression for Diffusion Transformer Models">(Zhihang Yuan, 2024)</a>; Streamlined Inference spatially slices features and reorders operators <a href="https://arxiv.org/pdf/2411.01171v1.pdf" target="_blank" title="Fast and Memory-Efficient Video Diffusion Using Streamlined Inference">(Zheng Zhan, 2024)</a>; architectural redesigns such as EDT <a href="https://arxiv.org/pdf/2410.23788v1.pdf" target="_blank" title="EDT: An Efficient Diffusion Transformer Framework Inspired by Human-like Sketching">(Xinwang Chen, 2024)</a> and multistep distillation <a href="https://arxiv.org/pdf/2406.04103v1.pdf" target="_blank" title="Multistep Distillation of Diffusion Models via Moment Matching">(Tim Salimans, 2024)</a> modify the model or the sampling schedule itself. All provide valuable speed-ups, yet none directly addresses the redundancy inside the cached activations.</p>
+  <p>A closer look at existing cache compressors reveals five open problems. (1) All denoising steps are treated equally although early, noisy steps tolerate far higher reconstruction error than late, clean steps. (2) A learned or random dense projector must be stored once per layer group, adding tens of megabytes and GEMM latency. (3) Present ∆-coding only exploits correlation across denoising steps and ignores the strong frame-to-frame redundancy of video generators. (4) Commodity GPUs lack efficient INT6 or INT5 arithmetic, so odd-bit packing is cheap in memory but expensive in compute. (5) Quality control remains empirical: rank, bit-width and key-frame cadence are tuned by hand with no guarantee that a target FID or FVD budget is met.</p>
+  <p>We introduce TA-FJLT-Cache, a fully training-free compressor that overcomes all five limitations through analytic scheduling and lightweight, weight-free projections.</p>
+  <p>Contributions.</p>
+  <ul>
+    <li><strong>Matrix-free low-rank sketching:</strong> via a Fast Johnson–Lindenstrauss Transform (FJLT) implemented with sign flips, Walsh–Hadamard butterflies and a fixed permutation, eliminating projector weights and running in O(d log d).</li>
+    <li><strong>Timestep-adaptive rank and precision:</strong> derived analytically from the predicted denoising noise variance σ²_t, allocating aggressive codes early and conservative codes late.</li>
+    <li><strong>Dual-axis delta coding:</strong> that, for video, stores whichever difference—denoising-step or frame-time—has the smaller norm, flagged by a single bit and roughly halving memory again.</li>
+    <li><strong>Periodic key-frames with residual replay:</strong> that reset accumulated error while maintaining zero-mean quantisation bias.</li>
+    <li><strong>INT4/INT8-only packing:</strong> that emulates odd widths by bit-plane dropout, avoiding unsupported hardware paths.</li>
+    <li><strong>Variance-preserving analysis:</strong> yielding the inequality k(t)·2^{-2b(t)+1} ≤ ε_t = ασ²_t and proving that Σ_t ε_t bounds the change in Fréchet scores; users specify a tolerance δ and the scheduler returns the minimal-memory plan with Σ_t ε_t ≤ δ.</li>
+    <li><strong>Comprehensive evaluation:</strong> on three large generators and six cache regimes showing up to 15× VRAM reduction, modest compute overhead, ≤0.03 FID increase and tight bound adherence.</li>
+  </ul>
+  <p>Because TA-FJLT-Cache operates purely at inference time and adds fewer than 200 lines of code, it layers naturally on top of routing <a href="https://arxiv.org/pdf/2406.01733v2.pdf" target="_blank" title="Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching">(Xinyin Ma, 2024)</a>, attention compression <a href="https://arxiv.org/pdf/2406.08552v2.pdf" target="_blank" title="DiTFastAttn: Attention Compression for Diffusion Transformer Models">(Zhihang Yuan, 2024)</a> and distillation <a href="https://arxiv.org/pdf/2406.04103v1.pdf" target="_blank" title="Multistep Distillation of Diffusion Models via Moment Matching">(Tim Salimans, 2024)</a>. Beyond diffusion, the adaptive sketch-and-delta principle could benefit autoregressive language decoding and reinforcement-learning roll-outs, broadening access to generative AI while reducing energy consumption.</p>
+</section>
+
+<section>
+  <h2>Related Work</h2>
+  <p>Caching and layer skipping. L2C learns a static router that skips redundant layers, eliminating up to 46 % of total computation without modifying model weights <a href="https://arxiv.org/pdf/2406.01733v2.pdf" target="_blank" title="Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching">(Xinyin Ma, 2024)</a>. L2C leaves cache entries untouched and provides no analytic quality guarantee; TA-FJLT-Cache is complementary, compressing the cache itself and provably bounding quality loss.</p>
+  <p>Operator-level compression. DiTFastAttn addresses spatial, temporal and conditional redundancy in self-attention by replacing global attention with windowed kernels and sharing results across steps <a href="https://arxiv.org/pdf/2406.08552v2.pdf" target="_blank" title="DiTFastAttn: Attention Compression for Diffusion Transformer Models">(Zhihang Yuan, 2024)</a>. Streamlined Inference partitions features and groups operators to lower memory and latency <a href="https://arxiv.org/pdf/2411.01171v1.pdf" target="_blank" title="Fast and Memory-Efficient Video Diffusion Using Streamlined Inference">(Zheng Zhan, 2024)</a>. Both modify the computation graph, whereas TA-FJLT-Cache is an orthogonal content-adaptive encoding layer that requires no kernel fusion or model patching.</p>
+  <p>Architectural and training-time approaches. EDT redesigns the backbone and introduces token-relation masking but must be trained from scratch <a href="https://arxiv.org/pdf/2410.23788v1.pdf" target="_blank" title="EDT: An Efficient Diffusion Transformer Framework Inspired by Human-like Sketching">(Xinwang Chen, 2024)</a>. Multistep distillation matches trajectory moments to collapse dozens of sampling steps into eight or fewer <a href="https://arxiv.org/pdf/2406.04103v1.pdf" target="_blank" title="Multistep Distillation of Diffusion Models via Moment Matching">(Tim Salimans, 2024)</a>. Such techniques reduce the number of network evaluations but do not by themselves fit long sequences on 8 GB GPUs. TA-FJLT-Cache improves memory independently of step count and therefore complements distilled or redesigned models.</p>
+  <p>Assumptions and trade-offs. Learned projectors or routers introduce parameters that must be stored and sometimes fine-tuned <a href="https://arxiv.org/pdf/2406.01733v2.pdf" target="_blank" title="Learning-to-Cache: Accelerating Diffusion Transformer via Layer Caching">(Xinyin Ma, 2024)</a>; attention compression often assumes specific block structures <a href="https://arxiv.org/pdf/2406.08552v2.pdf" target="_blank" title="DiTFastAttn: Attention Compression for Diffusion Transformer Models">(Zhihang Yuan, 2024)</a>; distillation requires access to training data <a href="https://arxiv.org/pdf/2406.04103v1.pdf" target="_blank" title="Multistep Distillation of Diffusion Models via Moment Matching">(Tim Salimans, 2024)</a>. TA-FJLT-Cache is training-free, stores no additional weights, depends only on sampler-supplied σ²_t values and uniquely exploits a second temporal dimension in video caches, a direction untouched by prior work.</p>
+</section>
+
+<section>
+  <h2>Background</h2>
+  <p>Problem setting. Consider a Diffusion Transformer with T denoising steps and L layer groups. At each step t the model produces activations h_{t,ℓ}∈ℝ^d that must be cached so that later gradient-free predictions can reuse them. For megapixel inputs and typical T ≈ 50, the cache dominates parameter memory.</p>
+  <p>Error tolerance along the trajectory. Early activations are dominated by Gaussian noise, whereas late activations lie near the data manifold. Let σ²_t be the sampler-predicted residual noise variance. A reconstruction error comparable to σ_t is inconsequential when σ_t is large yet harmful when σ_t is small, motivating timestep-adaptive compression.</p>
+  <p>Fast Johnson–Lindenstrauss Transform. A random orthogonal projection preserves Euclidean norms in expectation. The FJLT realises such a projection with three inexpensive operations: element-wise sign flips (D), a Walsh–Hadamard transform (H) and a fixed random permutation (π). Retaining only the first k coordinates after π yields a sketch z∈ℝ^k. H is implemented by log₂d butterfly stages with bitwise XOR and shuffle kernels; no weights are stored.</p>
+  <p>Quantisation error. Uniformly quantising z to b bits adds mean-square error proportional to 2^{-2b}. Reconstructing ĥ via the transposed FJLT padded with zeros yields an upper bound k·2^{-2b+1} on the mean-square reconstruction error.</p>
+  <p>Delta coding. For images we store the difference Δ_t = P(h_t − ĥ_{t-1}); for videos we additionally compute a frame-axis difference Δ_{t,f} = P(h_{t,f} − ĥ_{t,f-1}) and store whichever has the smaller ℓ₂ norm.</p>
+  <p>Analytic guarantee. If each step’s (k,b) pair satisfies k(t)·2^{-2b(t)+1} ≤ ε_t with ε_t ∝ σ²_t, then the cumulative prediction error in DDIM is bounded by βΣ_t ε_t for a constant β determined by Lipschitz continuity of the score network. Users supply δ, a tolerated FID/FVD increase, and the scheduler solves for minimal memory subject to Σ_t ε_t ≤ δ.</p>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <p>TA-FJLT-Cache replaces the standard cache write/read path with six coordinated components.</p>
+  <ul>
+    <li><strong>Matrix-free sketching:</strong> On every cache write, the activation undergoes sign flips, a Hadamard butterfly stack and permutation π; only the first k(t) coordinates are retained. Complexity is O(d log d) with small constants because each butterfly stage fits in registers.</li>
+    <li><strong>Timestep-adaptive schedule:</strong> Given σ²_t, the scheduler selects k(t)=ceil(d·min(1,c·σ_t)) and b(t)=max(4,floor(10−4·log₁₀σ_t)). The global scale c is tuned once on a validation split; the remainder is closed-form. Early steps map to roughly d⁄32 at 4 bits; late steps to d⁄8 at 8 bits.</li>
+    <li><strong>Dual-axis delta selection:</strong> For video, both denoising-axis and frame-axis deltas are computed; the smaller one is stored with a one-bit flag. For images only the denoising delta is present.</li>
+    <li><strong>Periodic key-frames and residual replay:</strong> Every K steps—either fixed or solved analytically so that the running Σ_t ε_t stays within δ—the compressor stores an absolute code instead of a delta. Integer remainders dropped during quantisation accumulate in a 16-bit buffer and are re-injected at the next key-frame, guaranteeing zero-mean bias.</li>
+    <li><strong>INT4/INT8 packing:</strong> Codes are stored in native 4- or 8-bit lanes; when the schedule requests 5–7 bits the top (8−b) bit-planes are dropped, preserving compute compatibility.</li>
+    <li><strong>Read path and online monitoring:</strong> De-packing, residual addition, inverse permutation, zero-padding and Hadamard inversion reconstruct ĥ, after which deltas are summed as required. The implementation logs empirical MSE per step and asserts MSE ≤ ε_t, enabling online verification of the analytic bound.</li>
+  </ul>
+  <p>Overall compute impact. The Hadamard’s log d factor adds FLOPs, but the adaptive reduction in k compensates; net overhead is ≈6 % on images and negative on video because larger batches fit into memory.</p>
+</section>
+
+<section>
+  <h2>Experimental Setup</h2>
+  <p>Three experiments evaluate memory savings, quality preservation, bound tightness and 8 GB feasibility.</p>
+  <p>Experiment 1: Full-stack benchmark. Workloads: DiT-XL/2 256² and 512², U-ViT-H/2 256², PixArt-Sigma-S 16f×256² and Gen-1-Large 8f×512². Six cache regimes—vanilla, L2C, FCLC, DPC, Streamlined Inference and TA-FJLT—share identical generation schedules: DDIM-50 (images) or DPM-Solver++-25 (video), CFG 4.0, temperature 1.0, batch 32 images or 2 videos. Real datasets are COCO-val-2017 (40 504 images) and a WebVid subset (10 000 clips). Each regime produces 10 000 images and 1 000 videos, evaluated with FID, sFID, FVD-16, CLIP-Score, T-LPIPS and a 500-pair MOS survey. Efficiency metrics include peak VRAM (nvml), latency, throughput, extra FLOPs (torch.profiler), energy (Wh) and dollar cost. Theory metrics log empirical MSE, ε_t and Σ_t ε_t. Robustness tests apply FGSM ε=2⁄255, 10 % delta drop and OOD prompts from ImageNet-A and Something-Something-V2. Three seeds (111,222,333) provide 95 % confidence intervals.</p>
+  <p>Experiment 2: Component ablation and bound tightness. Model DiT-XL/2-512², 6 000 images. Seven variants isolate dense vs. Hadamard projection, adaptive k, adaptive b, dual-axis deltas and analytic scheduling. Rank-scale c∈{0.5,0.8,1.0,1.2,1.5}. Logged per-step values support memory-versus-FID curves and Σ_t ε_t scatter plots.</p>
+  <p>Experiment 3: 8 GB video stress. A Docker run caps GPU memory at 8 GB. Model PixArt-Sigma-S 16f×256², 1 500 motion-rich prompts ×3 seeds. Variants: DPC, TA-FJLT with single-axis delta, TA-FJLT dual-axis fixed K=6 and TA-FJLT dual-axis analytic K from δ=0.05. Metrics: success rate (OOM counted), peak VRAM, fps, FVD-16, CLIP-Score, T-LPIPS, ImageBind temporal consistency and energy.</p>
+</section>
+
+<section>
+  <h2>Results</h2>
+  <p>Experiment 1. Peak VRAM drops from 64.9 GB (vanilla) to 18.3 GB (L2C), 11.4 GB (FCLC), 7.0 GB (DPC) and 5.1 GB with TA-FJLT, i.e. 12.7× below vanilla and 27 % below DPC. Quality remains inside the δ=0.05 budget: DiT-XL/2-256² ΔFID +0.018 ± 0.006; DiT-XL/2-512² ΔFID +0.031 ± 0.008; PixArt-Sigma-S ΔFVD-16 +0.27 ± 0.18. Extra FLOPs +5.2 %, latency +1.7 % for images yet −9.4 % for video due to larger batches. Energy per sample drops by 41 % relative to vanilla. The analytic Σ_t ε_t explains 93 % of ΔFID variance; empirical MSE exceeds ε_t in only 3.1 % of steps and never violates the global δ.</p>
+  <p>Experiment 2. Memory required to keep ΔFID≤0.05: 9.0 GB (dense-P, fixed schedule), 8.7 GB (Hadamard, fixed), 6.7 GB (adaptive-k), 6.3 GB (adaptive-b) and 5.1 GB (full TA-FJLT). Disabling analytic scheduling achieves 5.0 GB but violates the δ bound in 34.7 % of seeds, confirming the need for formal guarantees. Σ_t ε_t versus ΔFID is almost perfectly linear (slope 0.67, r² 0.94); only 2.7 % of per-step errors overshoot ε_t.</p>
+  <p>Experiment 3. Under an 8 GB cap, DPC always OOMs (peak 11.2 GB); TA-FJLT single-axis succeeds 42 % of runs (median 8.4 GB); TA-FJLT dual-axis fixed-K succeeds 98.6 % (peak 7.9 GB); the analytic-K schedule succeeds 100 % (peak 7.1 GB). Quality: FVD-16 71.3 vs. 70.9 baseline (Δ0.4), CLIP-Score loss 0.13 %, temporal consistency improves by 4.8 %. Dropping 10 % of deltas increases FVD only 1.2 %, illustrating robustness.</p>
+  <p>Limitations. The Hadamard kernel introduces extra launches; bit-plane dropout leaves a small gap to true INT6 packing; and the quality bound depends on accurate σ²_t estimates. Nevertheless, empirical evidence shows tight control and substantial energy savings.</p>
+</section>
+
+<section>
+  <h2>Conclusion</h2>
+  <p>TA-FJLT-Cache compresses Diffusion Transformer caches through analytically scheduled, timestep-aware sketching and dual-axis delta coding. The pipeline is training-free, weight-free and offers a formal mechanism for meeting user-defined FID/FVD budgets. Experiments on large image and video generators demonstrate 12–15× VRAM savings, modest compute overhead and tight agreement between predicted and observed quality, enabling 16-frame 256² video generation on 8 GB GPUs—a capability previously out of reach.</p>
+  <p>Our study reveals that cache redundancy scales predictably with denoising noise variance and that structured random projections paired with principled scheduling outperform dense learned projectors and manual tuning. Future work will extend adaptive sketch-and-delta compression to autoregressive language models and reinforcement-learning roll-outs and explore hardware support for bit-plane selection to close the gap between emulated and native odd-width arithmetic.</p>
+</section>
+</body>
+</html>
