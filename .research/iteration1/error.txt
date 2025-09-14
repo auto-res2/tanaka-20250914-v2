@@ -1,0 +1,18 @@
+Using CPython 3.11.13
+Creating virtual environment at: .venv
+  × No solution found when resolving dependencies for split (markers:
+  │ python_full_version >= '3.10'):
+  ╰─▶ Because tafjlt-cache was not found in the package registry and
+      ta-fjlt-cache-experiments[default] depends on tafjlt-cache>=0.1.0, we
+      can conclude that ta-fjlt-cache-experiments[default]'s requirements
+      are unsatisfiable.
+      And because your project requires ta-fjlt-cache-experiments[default], we
+      can conclude that your project's requirements are unsatisfiable.
+  × No solution found when resolving dependencies for split (markers:
+  │ python_full_version >= '3.10'):
+  ╰─▶ Because tafjlt-cache was not found in the package registry and
+      ta-fjlt-cache-experiments[default] depends on tafjlt-cache>=0.1.0, we
+      can conclude that ta-fjlt-cache-experiments[default]'s requirements
+      are unsatisfiable.
+      And because your project requires ta-fjlt-cache-experiments[default], we
+      can conclude that your project's requirements are unsatisfiable.
