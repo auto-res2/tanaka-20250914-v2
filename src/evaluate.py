@@ -85,27 +85,32 @@ def _safe_enable_cache(pipe, comp_cfg: dict):
         return  # no compression requested
 
     try:
+        model_component = getattr(pipe, 'transformer', getattr(pipe, 'unet', None))
+        if model_component is None:
+            print(f"[warning] Could not find model component (unet/transformer) – using vanilla.")
+            return
+            
         if method.startswith("ta_fjlt"):
-            tafjlt = importlib.import_module("tafjlt_cache")
-            tafjlt.enable_cache(
-                pipe.unet,
+            from . import tafjlt_cache
+            tafjlt_cache.enable_cache(
+                model_component,
                 schedule="analytic",
                 c=comp_cfg.get("c", 1.0),
                 keyframe_K=comp_cfg.get("keyframe_K", 6),
             )
         elif method == "fjlt_fixed":
-            tafjlt = importlib.import_module("tafjlt_cache")
-            tafjlt.enable_cache(
-                pipe.unet,
+            from . import tafjlt_cache
+            tafjlt_cache.enable_cache(
+                model_component,
                 schedule="fixed",
-                k_factor=comp_cfg["k_factor"],
-                bits=comp_cfg["bits"],
+                c=comp_cfg.get("c", 1.0),
+                keyframe_K=comp_cfg.get("keyframe_K", 6),
             )
         else:
             other = importlib.import_module("other_compressors")
-            other.enable_scheme(pipe.unet, scheme=method)
-    except ModuleNotFoundError:
-        print(f"[warning] Optional compressor '{method}' not found – using vanilla.")
+            other.enable_scheme(model_component, scheme=method)
+    except (ModuleNotFoundError, AttributeError, ImportError) as e:
+        print(f"[warning] Optional compressor '{method}' failed ({e}) – using vanilla.")
 
 # -----------------------------------------------------------------------------
 # Public API
@@ -156,12 +161,17 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
             # ----------------------------------------------------------
             print(f"\n[eval] Loading model '{repo}' (precision fp16) …")
             use_token = os.getenv("HF_TOKEN") if "PixArt" in repo else None
-            pipe = DiffusionPipeline.from_pretrained(
-                repo, torch_dtype=torch.float16, use_auth_token=use_token
-            )
             device = "cuda" if torch.cuda.is_available() else "cpu"
+            dtype = torch.float16 if device == "cuda" else torch.float32
+            
+            pipe = DiffusionPipeline.from_pretrained(
+                repo, torch_dtype=dtype, use_auth_token=use_token
+            )
             pipe.to(device)
             pipe.set_progress_bar_config(disable=True)
+            
+            if device == "cpu":
+                print(f"[warning] CUDA not available, running on CPU (slower but functional)")
 
             # ----------------------------------------------------------
             # Compression backend
@@ -178,11 +188,18 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
             start_power_t = time.time()
             try:
                 for i in tqdm(range(num_imgs), desc=f"{tag} – generating"):
-                    image = pipe(
-                        prompt=[""],
-                        num_inference_steps=exp_cfg.generation["num_inference_steps"],
-                        guidance_scale=exp_cfg.generation["guidance_scale"],
-                    ).images[0]
+                    if hasattr(pipe, 'transformer'):  # DiT model
+                        image = pipe(
+                            class_labels=[0],  # Use class 0 for unconditional generation
+                            num_inference_steps=exp_cfg.generation["num_inference_steps"], 
+                            guidance_scale=exp_cfg.generation["guidance_scale"]
+                        ).images[0]
+                    else:  # Standard diffusion model
+                        image = pipe(
+                            prompt=[""], 
+                            num_inference_steps=exp_cfg.generation["num_inference_steps"], 
+                            guidance_scale=exp_cfg.generation["guidance_scale"]
+                        ).images[0]
                     image.save(fake_dir / f"img_{i:05d}.png")
             except Exception:
                 print("[error] Generation failed – dumping traceback & continuing …")
