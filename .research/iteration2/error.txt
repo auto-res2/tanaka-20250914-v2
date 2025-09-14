@@ -1,0 +1,33 @@
+/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.venv/lib/python3.11/site-packages/torch/cuda/__init__.py:63: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Traceback (most recent call last):
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/src/preprocess.py", line 34, in load_prompts
+    ds = load_dataset(ds_name, split=split, cache_dir=str(cache_dir))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.venv/lib/python3.11/site-packages/datasets/load.py", line 1392, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.venv/lib/python3.11/site-packages/datasets/load.py", line 1132, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.venv/lib/python3.11/site-packages/datasets/load.py", line 1025, in dataset_module_factory
+    raise e1 from None
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/.venv/lib/python3.11/site-packages/datasets/load.py", line 980, in dataset_module_factory
+    raise DatasetNotFoundError(f"Dataset '{path}' doesn't exist on the Hub or cannot be accessed.") from e
+datasets.exceptions.DatasetNotFoundError: Dataset 'cococaptions' doesn't exist on the Hub or cannot be accessed.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/src/main.py", line 174, in <module>
+    main()
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/src/main.py", line 170, in main
+    runner.execute()
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/src/evaluate.py", line 255, in execute
+    prompts = load_prompts(prompt_set, cache_root=Path("data"))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/toma/pt-80-1-a-13/_work/tanaka-20250914-v2/tanaka-20250914-v2/src/preprocess.py", line 36, in load_prompts
+    raise RuntimeError(f"[DATA] Could not download dataset {ds_name}: {e}") from e
+RuntimeError: [DATA] Could not download dataset cococaptions: Dataset 'cococaptions' doesn't exist on the Hub or cannot be accessed.
