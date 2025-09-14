@@ -1,6 +1,6 @@
 run_name: full_$(date +%Y%m%d_%H%M%S)
 seed_list: [111, 222, 333]
-results_dir: .research/iteration9
+results_dir: .research/iteration10
 experiments:
   - id: exp1_full_system
     type: full_system
