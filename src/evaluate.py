@@ -174,14 +174,15 @@ def run_experiment(exp_cfg, global_cfg) -> None:  # noqa: C901 – keep flat for
             fake_dir.mkdir(parents=True, exist_ok=True)
 
             # ----------------------------------------------------------
-            # Load model (fp16 when possible)
+            # Load model (fp16 when possible, fp32 on CPU)
             # ----------------------------------------------------------
-            print(f"\n[eval] Loading model '{repo}' (precision fp16) …")
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            dtype = torch.float16 if device == "cuda" else torch.float32
+            print(f"\n[eval] Loading model '{repo}' (precision {dtype}) …")
             use_token = os.getenv("HF_TOKEN") if "PixArt" in repo else None
             pipe = DiffusionPipeline.from_pretrained(
-                repo, torch_dtype=torch.float16, use_auth_token=use_token
+                repo, torch_dtype=dtype, use_auth_token=use_token
             )
-            device = "cuda" if torch.cuda.is_available() else "cpu"
             pipe.to(device)
             pipe.set_progress_bar_config(disable=True)
 
