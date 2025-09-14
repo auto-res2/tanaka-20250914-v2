@@ -1,0 +1,4 @@
+=== [PHASE 2/2] Full experiment start Sun Sep 14 04:15:46 AM UTC 2025 ===
+[CONFIG] Loading config/full_experiment.yaml
+
+========== Running Experiment: experiment1_memory_fidelity_pareto ==========
