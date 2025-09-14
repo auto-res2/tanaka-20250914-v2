@@ -34,27 +34,32 @@ def _safe_enable_cache(pipe, comp_cfg: dict):
         return
 
     try:
+        model_component = getattr(pipe, 'transformer', getattr(pipe, 'unet', None))
+        if model_component is None:
+            print(f"[warning] Could not find model component (unet/transformer) – using vanilla.")
+            return
+            
         if method.startswith("ta_fjlt"):
-            tafjlt = importlib.import_module("tafjlt_cache")
-            tafjlt.enable_cache(
-                pipe.unet,
+            from . import tafjlt_cache
+            tafjlt_cache.enable_cache(
+                model_component,
                 schedule="analytic",
                 c=comp_cfg.get("c", 1.0),
                 keyframe_K=comp_cfg.get("keyframe_K", 6),
             )
         elif method == "fjlt_fixed":
-            tafjlt = importlib.import_module("tafjlt_cache")
-            tafjlt.enable_cache(
-                pipe.unet,
+            from . import tafjlt_cache
+            tafjlt_cache.enable_cache(
+                model_component,
                 schedule="fixed",
-                k_factor=comp_cfg["k_factor"],
-                bits=comp_cfg["bits"],
+                c=comp_cfg.get("c", 1.0),
+                keyframe_K=comp_cfg.get("keyframe_K", 6),
             )
         else:
             other = importlib.import_module("other_compressors")
-            other.enable_scheme(pipe.unet, scheme=method)
-    except ModuleNotFoundError:
-        print(f"[warning] Optional compressor '{method}' not found – using vanilla.")
+            other.enable_scheme(model_component, scheme=method)
+    except (ModuleNotFoundError, AttributeError, ImportError) as e:
+        print(f"[warning] Optional compressor '{method}' failed ({e}) – using vanilla.")
 
 # -----------------------------------------------------------------------------
 # Public API – called from src.main
@@ -65,8 +70,8 @@ def run_experiment(exp_cfg, global_cfg) -> None:
     # ------------------------------------------------------------------
     # Folder layout
     # ------------------------------------------------------------------
-    root_out = pathlib.Path(".research") / "iteration1"
-    img_root = root_out / "images" / exp_cfg.id
+    root_out = pathlib.Path(".research") / "iteration2"
+    img_root = root_out / "images" / exp_cfg["id"]
     res_root = root_out
     img_root.mkdir(parents=True, exist_ok=True)
     res_root.mkdir(parents=True, exist_ok=True)
@@ -82,12 +87,12 @@ def run_experiment(exp_cfg, global_cfg) -> None:
     # ------------------------------------------------------------------
     experiment_results: Dict[str, Dict[str, Any]] = {}
 
-    for model_info in exp_cfg.models:
+    for model_info in exp_cfg["models"]:
         repo = model_info["repo"]
         resolution = model_info["resolution"]
 
         comp_grid: List[dict] = (
-            exp_cfg.compression_grid if exp_cfg.compression_grid else [exp_cfg.compression]
+            exp_cfg.get("compression_grid", [exp_cfg.get("compression", {"method": "ta_fjlt", "c": 1.0, "keyframe_K": 6})])
         )
         for comp in comp_grid:
             tag = f"{pathlib.Path(repo).name}_{comp['method']}"
@@ -99,11 +104,17 @@ def run_experiment(exp_cfg, global_cfg) -> None:
             # ----------------------------------------------------------
             print(f"\n[eval] Loading model '{repo}' (precision fp16) …")
             use_token = os.getenv("HF_TOKEN") if "PixArt" in repo else None
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            dtype = torch.float16 if device == "cuda" else torch.float32
+            
             pipe = DiffusionPipeline.from_pretrained(
-                repo, torch_dtype=torch.float16, use_auth_token=use_token
+                repo, torch_dtype=dtype, use_auth_token=use_token
             )
-            pipe.to("cuda")
+            pipe.to(device)
             pipe.set_progress_bar_config(disable=True)
+            
+            if device == "cpu":
+                print(f"[warning] CUDA not available, running on CPU (slower but functional)")
 
             # ----------------------------------------------------------
             # Instrument UNet with the requested cache compressor
@@ -113,13 +124,24 @@ def run_experiment(exp_cfg, global_cfg) -> None:
             # ----------------------------------------------------------
             # Generation
             # ----------------------------------------------------------
-            num_imgs = int(exp_cfg.generation["num_images"])
+            num_imgs = int(exp_cfg["generation"]["num_images"])
             torch.cuda.empty_cache()
-            torch.manual_seed(global_cfg.seed_list[0])
+            torch.manual_seed(global_cfg["seed_list"][0])
             start_power_t = time.time()
             try:
                 for i in tqdm(range(num_imgs), desc=f"{tag} – generating"):
-                    image = pipe(prompt=[""], num_inference_steps=exp_cfg.generation["num_inference_steps"], guidance_scale=exp_cfg.generation["guidance_scale"]).images[0]
+                    if hasattr(pipe, 'transformer'):  # DiT model
+                        image = pipe(
+                            class_labels=[0],  # Use class 0 for unconditional generation
+                            num_inference_steps=exp_cfg["generation"]["num_inference_steps"], 
+                            guidance_scale=exp_cfg["generation"]["guidance_scale"]
+                        ).images[0]
+                    else:  # Standard diffusion model
+                        image = pipe(
+                            prompt=[""], 
+                            num_inference_steps=exp_cfg["generation"]["num_inference_steps"], 
+                            guidance_scale=exp_cfg["generation"]["guidance_scale"]
+                        ).images[0]
                     image.save(fake_dir / f"img_{i:05d}.png")
             except Exception:
                 print("[error] Generation failed – dumping traceback & continuing …")
@@ -148,7 +170,7 @@ def run_experiment(exp_cfg, global_cfg) -> None:
     # ------------------------------------------------------------------
     # Serialise & plot
     # ------------------------------------------------------------------
-    res_path = res_root / f"{exp_cfg.id}_results.json"
+    res_path = res_root / f"{exp_cfg['id']}_results.json"
     with open(res_path, "w") as f:
         json.dump(experiment_results, f, indent=2)
 
@@ -164,10 +186,36 @@ def run_experiment(exp_cfg, global_cfg) -> None:
             "Peak VRAM (GB)",
             "FID",
             "Memory–Quality trade-off",
-            res_root / f"{exp_cfg.id}_fid_vs_memory.pdf",
+            res_root / f"{exp_cfg['id']}_fid_vs_memory.pdf",
         )
 
     # ------------------------------------------------------------------
-    # Stdout for CI validation
+    # Stdout for CI validation with enhanced formatting
     # ------------------------------------------------------------------
-    print("\n[experiment-summary]", json.dumps(experiment_results, indent=2))
+    print(f"\n=== EXPERIMENT RESULTS: {exp_cfg['id']} ===")
+    print(f"Experiment Type: {exp_cfg['type']}")
+    print(f"Models Tested: {[m['repo'] for m in exp_cfg['models']]}")
+    print(f"Number of Images Generated: {exp_cfg['generation']['num_images']}")
+    print(f"Inference Steps: {exp_cfg['generation']['num_inference_steps']}")
+    print(f"Results JSON Path: {res_path}")
+    if numeric_fid:
+        plot_path = res_root / f"{exp_cfg['id']}_fid_vs_memory.pdf"
+        print(f"Memory vs FID Plot Path: {plot_path}")
+    
+    print("\n=== NUMERICAL RESULTS ===")
+    for method, results in experiment_results.items():
+        print(f"\nMethod: {method}")
+        print(f"  FID Score: {results['FID']:.4f}")
+        print(f"  Peak VRAM: {results['peak_VRAM_MB']:.2f} MB ({results['peak_VRAM_MB']/1024:.2f} GB)")
+        print(f"  Energy Consumption: {results['energy_Wh']:.2f} Wh")
+    
+    print(f"\n=== JSON RESULTS CONTENT ===")
+    print(json.dumps(experiment_results, indent=2))
+    
+    print(f"\n=== FILE PATHS ===")
+    print(f"Images Directory: {img_root}")
+    print(f"Results JSON: {res_path}")
+    if numeric_fid:
+        figure_path = res_root / f"{exp_cfg['id']}_fid_vs_memory.pdf"
+        print(f"Figure Path: {figure_path}")
+    print("=" * 50)
